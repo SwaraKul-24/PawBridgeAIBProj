@@ -1,6 +1,7 @@
 const Donation = require('../models/Donation');
 const NGO = require('../models/NGO');
 const geoService = require('../services/geoService');
+const donationService = require('../services/donationService');
 const notificationService = require('../services/notificationService');
 
 /**
@@ -33,9 +34,9 @@ async function createDonation(req, res) {
       });
     }
 
-    // Calculate equal distribution
-    const sharePerNGO = parseFloat((amount / eligibleNGOs.length).toFixed(2));
-    const remainder = parseFloat((amount - (sharePerNGO * eligibleNGOs.length)).toFixed(2));
+    // Calculate equal distribution using service
+    const { distributions: distributionDetails, sharePerNGO, remainder } = 
+      donationService.calculateDistribution(amount, eligibleNGOs);
 
     // Create donation record
     const donationId = await Donation.create({
@@ -63,21 +64,6 @@ async function createDonation(req, res) {
 
     // Generate mock payment gateway URL (Phase 1)
     const paymentGatewayUrl = `https://mock-payment-gateway.com/checkout/${donationId}`;
-
-    // Prepare distribution details for response
-    const distributionDetails = eligibleNGOs.map((ngo, index) => {
-      let distributedAmount = sharePerNGO;
-      if (index === eligibleNGOs.length - 1) {
-        distributedAmount += remainder;
-      }
-
-      return {
-        ngoId: ngo.id,
-        ngoName: ngo.organization_name,
-        distance: `${ngo.distance} km`,
-        distributedAmount: parseFloat(distributedAmount.toFixed(2))
-      };
-    });
 
     res.status(201).json({
       success: true,

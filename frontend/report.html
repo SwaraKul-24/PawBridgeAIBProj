@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Injured Animal - PawBridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    :root {
+      --primary-green: #38512F;
+      --beige-bg: #FEF5E7;
+      --dark-brown: #3A3630;
+      --light-green: #DFF5E1;
+      --darker-beige: #F0DDBF;
+      --orange-accent: #DEA773;
+    }
+
+    body {
+      background-color: var(--beige-bg);
+      color: var(--dark-brown);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .navbar {
+      background-color: var(--primary-green) !important;
+    }
+
+    .navbar-brand, .navbar-nav .nav-link {
+      color: white !important;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-green);
+      border-color: var(--primary-green);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #2d3f25;
+      border-color: #2d3f25;
+    }
+
+    .report-container {
+      max-width: 600px;
+      margin: 50px auto;
+    }
+
+    .report-card {
+      background-color: white;
+      border-radius: 10px;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .report-card h2 {
+      color: var(--primary-green);
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .form-label {
+      color: var(--dark-brown);
+      font-weight: 500;
+    }
+
+    .location-info {
+      background-color: var(--light-green);
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 0.9rem;
+    }
+
+    .alert {
+      margin-top: 20px;
+    }
+
+    footer {
+      background-color: var(--darker-beige);
+      padding: 20px 0;
+      margin-top: 60px;
+      text-align: center;
+      color: var(--dark-brown);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="index.html">🐾 PawBridge</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="index.html">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="report.html">Report</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="report-container">
+    <div class="report-card">
+      <h2>Report Injured Animal</h2>
+
+      <div class="location-info" id="locationInfo">
+        <strong>📍 Location:</strong> Detecting your location...
+      </div>
+
+      <form id="reportForm">
+        <div class="mb-3">
+          <label for="animalType" class="form-label">Animal Type</label>
+          <input type="text" class="form-control" id="animalType" name="animalType" placeholder="e.g., Dog, Cat, Bird" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <textarea class="form-control" id="description" name="userEditedDescription" rows="4" placeholder="Describe the animal's condition and location details..." required></textarea>
+        </div>
+
+        <div class="mb-3">
+          <label for="images" class="form-label">Upload Image/Video</label>
+          <input type="file" class="form-control" id="images" name="images" accept="image/*,video/*" multiple required>
+          <div class="form-text">You can upload multiple images or videos</div>
+        </div>
+
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+
+        <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+          Submit Report
+        </button>
+      </form>
+
+      <div id="alertContainer"></div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 PawBridge. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/report.js"></script>
+</body>
+</html>

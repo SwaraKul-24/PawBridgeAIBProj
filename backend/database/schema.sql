@@ -128,6 +128,17 @@ CREATE TABLE abuse_media (
   INDEX idx_abuse_report (abuse_report_id)
 );
 
+-- Abuse status history table
+CREATE TABLE abuse_status_history (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  abuse_report_id INT NOT NULL,
+  status ENUM('submitted', 'under_review', 'assigned', 'in_progress', 'resolved', 'rejected', 'unassigned'),
+  notes TEXT,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (abuse_report_id) REFERENCES abuse_reports(id) ON DELETE CASCADE,
+  INDEX idx_abuse_report (abuse_report_id)
+);
+
 -- Notifications table
 CREATE TABLE notifications (
   id INT PRIMARY KEY AUTO_INCREMENT,
