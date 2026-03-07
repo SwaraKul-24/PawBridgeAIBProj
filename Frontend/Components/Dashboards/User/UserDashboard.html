@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>User Dashboard - PawBridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #FEF5E7;
+      display: flex;
+    }
+
+    /* Volunteering Styles */
+.volunteer-opportunity {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-left: 5px solid #DEA773;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s;
+}
+
+.volunteer-opportunity:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.volunteer-badge {
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 15px;
+  font-size: 0.85em;
+  font-weight: 600;
+  margin-right: 8px;
+}
+
+.badge-urgent { background-color: #ff7675; color: white; }
+.badge-ongoing { background-color: #74b9ff; color: white; }
+.badge-flexible { background-color: #55efc4; color: white; }
+.badge-weekend { background-color: #ffeaa7; color: #2d3436; }
+
+.volunteer-info-box {
+  background-color: #F0F8F0;
+  border-left: 5px solid #38512F;
+  padding: 25px;
+  margin: 25px 0;
+  border-radius: 0 10px 10px 0;
+}
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      height: 100vh;
+      background: linear-gradient(to right, #d69d57);
+      padding: 30px 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      color: white;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h3 {
+      font-weight: bold;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+    }
+
+    /* sidebar buttons */
+    .sidebar-link {
+      background: none;
+      border: none;
+      color: white;
+      display: block;
+      margin: 15px 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar-link:hover,
+    .sidebar-link.active {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Main content */
+    .main-content {
+      margin-left: 240px;
+      padding: 40px;
+      flex: 1;
+    }
+
+    .logout-btn {
+      background-color: #d69d57;
+      color: white;
+      font-weight: 600;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .logout-btn:hover {
+      background-color: #c86e30;
+      color: white;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background-color: #DEA773;
+      color: white;
+      border-radius: 12px 12px 0 0 !important;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background-color: #DEA773;
+      border-color: #DEA773;
+    }
+
+    .btn-primary:hover {
+      background-color: #C46F36;
+      border-color: #C46F36;
+    }
+
+    .status-badge {
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .status-pending { background-color: #ffeaa7; color: #2d3436; }
+    .status-accepted { background-color: #81ecec; color: #2d3436; }
+    .status-ngo-departing { background-color: #74b9ff; color: white; }
+    .status-ngo-arrived { background-color: #0984e3; color: white; }
+    .status-under-treatment { background-color: #fdcb6e; color: #2d3436; }
+    .status-treated { background-color: #00b894; color: white; }
+    .status-transferred { background-color: #6c5ce7; color: white; }
+    .status-rejected { background-color: #e17055; color: white; }
+
+    .donation-card {
+      background-color: #FFF9F2;
+      border-radius: 15px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      padding: 40px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .qr-container {
+      background: white;
+      border: 3px solid #DEA773;
+      border-radius: 15px;
+      padding: 20px;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .qr-placeholder {
+      width: 250px;
+      height: 250px;
+      background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+      border: 2px dashed #DEA773;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      border-radius: 10px;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .qr-icon {
+      font-size: 60px;
+      margin-bottom: 10px;
+    }
+
+    .quote-section {
+      background-color: #DFF5E1;
+      padding: 60px 20px;
+      text-align: center;
+      border-radius: 0;
+    }
+
+    .quote-section blockquote {
+      font-size: 1.5rem;
+      font-style: italic;
+      color: #38512F;
+      margin-bottom: 20px;
+    }
+
+    .impact-stats {
+      background-color: #38512F;
+      color: white;
+      padding: 60px 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 20px;
+    }
+
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #DEA773;
+    }
+
+    .btn-donate {
+      background-color: #DEA773;
+      border-color: #DEA773;
+      color: white;
+      font-weight: bold;
+      padding: 12px 30px;
+      font-size: 1.1rem;
+      border-radius: 25px;
+    }
+
+    .btn-donate:hover {
+      background-color: #C46F36;
+      border-color: #C46F36;
+      color: white;
+    }
+
+    .donation-info {
+      background-color: #F0F8F0;
+      border-left: 5px solid #38512F;
+      padding: 20px;
+      margin: 20px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .distribution-info {
+      background: linear-gradient(135deg, #3A3630, #4a453e);
+      color: white;
+      border-radius: 15px;
+      padding: 30px;
+      margin: 20px 0;
+    }
+
+    .step-item {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+      padding: 15px;
+      background-color: rgba(255,255,255,0.1);
+      border-radius: 10px;
+    }
+
+    .step-number {
+      background-color: #DEA773;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 15px;
+    }
+
+    .adoption-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .profile-section {
+  position: fixed; 
+  top: 50%; 
+  left: 50%; 
+  transform: translate(-50%, -50%); 
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  width: 400px;
+  max-width: 90%;
+  display: none;
+  z-index: 1000;
+}
+ .ad-box {
+  width: 370px;
+  background-color: #FFF9F2;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+.ad-box:hover {
+  transform: scale(1.05);
+} 
+ 
+    
+
+    @media (max-width: 768px) {
+      .qr-placeholder { width: 200px; height: 200px; }
+      .donation-card { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3>User Panel</h3>
+    <button class="sidebar-link active" onclick="showSection('dashboard')" id="nav-dashboard">🏠 Dashboard</button>
+    <button class="sidebar-link" onclick="showSection('my-reports')" id="nav-reports">📋 My Reports</button>
+    <button class="sidebar-link" onclick="showSection('adoptions')" id="nav-adoptions">🐾 Adoptions</button>
+    <button class="sidebar-link" onclick="showSection('volunteering')" id="nav-volunteering">🤝 Volunteering</button>
+    <button class="sidebar-link" onclick="showSection('donations')" id="nav-donations">💝 Donations</button>
+    <button class="sidebar-link" onclick="showSection('notifications')" id="nav-notifications">🔔 Notifications</button>
+    <button class="sidebar-link" onclick="showSection('profile')" id="nav-profile">👤 Profile</button>
+    <div class="flex-grow-1"></div>
+    <button class="logout-btn mt-4" onclick="logout()">Logout</button>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Dashboard Section -->
+    <div id="dashboard" class="content-section active">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Welcome, <span id="userName">User</span>!</h2>
+        <small class="text-muted">Last login: <span id="lastLogin">Just now</span></small>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title text-primary">🚨 Quick Report</h5>
+              <p class="card-text">Report an injured animal immediately</p>
+              <button class="btn btn-primary" onclick="window.location.href='../../../InjuryReportPage.html'">Report Now</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title text-success">📋 My Reports</h5>
+              <p class="card-text">Track your submitted reports</p>
+              <button class="btn btn-outline-success" onclick="showSection('my-reports')">View Reports</button>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card text-center">
+            <div class="card-body">
+              <h5 class="card-title text-info">🐾 Adopt</h5>
+              <p class="card-text">Find animals ready for adoption</p>
+              <button class="btn btn-outline-info" onclick="showSection('adoptions')">Browse</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- advertisement section -->
+<div class="card mt-4">
+  <div class="card-header">🛍️ Sponsored - Pet Care Essentials</div>
+  <div class="card-body text-center">
+    <div id="adPlaceholder" class="d-flex justify-content-center flex-wrap gap-3">
+      <!-- placeholder ads -->
+       <div class="ad-box border rounded p-3">
+        <img src="../../../Assets/images/Dark Blue Fun Pet Care Business Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <p class="small text-muted">Pet Sitter</p>
+      </div>
+      <div class="ad-box border rounded p-3">
+        <img src="../../../Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <p class="small text-muted">Premium Grooming services</p>
+      </div>
+      <div class="ad-box border rounded p-3">
+        <img src="../../../Assets/images/Brown Beige Modern Pet Shop Facebook Post.png" class="img-fluid mb-2" alt="Pet Toy Ad">
+        <p class="small text-muted">Pet shop</p>
+      </div>
+      <div class="ad-box border rounded p-3">
+        <img src="../../../Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post (1).png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <p class="small text-muted">Premium Pet Food</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+    </div>
+
+    <!-- my reports section -->
+    <div id="my-reports" class="content-section">
+      <div class="card">
+        <div class="card-header">📋 My Reports</div>
+        <div class="card-body" id="myReportsContainer">
+          <div class="text-center text-muted">
+            <div class="spinner-border" role="status"></div>
+            <div class="mt-2">Loading your reports...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- adoptions section -->
+    <div id="adoptions" class="content-section">
+      <div class="card">
+        <div class="card-header">🐾 Adoption Posts</div>
+        <div class="card-body" id="adoptionsContainer">
+          <div class="row" id="adoptionPosts">
+            <div class="text-center text-muted">
+              <div class="spinner-border" role="status"></div>
+              <div class="mt-2">Loading adoption posts...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- donations section -->
+    <div id="donations" class="content-section">
+      <div class="donation-card">
+        <h3 class="mb-4">Make a Difference Today</h3>
+        <button onclick="goToDonation()" class="btn btn-outline-success donate-btn">
+          🐾 Donate to PawBridge
+        </button>
+
+        <!-- QR code -->
+<!-- <div class="qr-container">
+  <h5 class="mb-3">Scan to Donate via UPI</h5>
+  <div class="qr-placeholder" aria-label="UPI QR Code placeholder">
+    <img src="../../../Assets/images/Sustainable (1).png" 
+         alt="UPI QR Code" 
+         class="qr-img">
+    <div style="font-size: 0.8em; margin-top: 10px; color: #666;">
+      pawbridge@upi<br>
+      Scan & Pay Any Amount
+    </div>
+  </div>
+  <p class="mt-3 text-muted"><small>Secure payments powered by UPI. Your donation goes directly to verified NGOs.</small></p>
+</div> -->
+
+<style>
+  .qr-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 15px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background: #fafafa;
+    width: fit-content;
+    margin: auto;
+  }
+  .qr-img {
+    width: 180px;    
+    height: 180px;    
+    object-fit: contain;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+  }
+</style>
+
+        <!-- donation Info -->
+        <div class="donation-info text-start">
+          <h6><strong>How Your Donations Help:</strong></h6>
+          <ul class="mb-0">
+            <li><strong>₹100</strong> - Basic first aid for one injured animal</li>
+            <li><strong>₹500</strong> - Emergency veterinary treatment</li>
+            <li><strong>₹1000</strong> - Complete medical care including surgery</li>
+            <li><strong>₹2500</strong> - One month shelter care for rescued animals</li>
+          </ul>
+        </div>
+
+        <!-- distribution Info -->
+        <div class="distribution-info">
+          <h5>📊 How Funds Are Distributed</h5>
+          <div class="step-item"><div class="step-number">1</div><div>Your donation is received through PawBridge platform</div></div>
+          <div class="step-item"><div class="step-number">2</div><div>Funds are allocated to verified NGOs in your region</div></div>
+          <div class="step-item"><div class="step-number">3</div><div>Distribution based on rescue activity and success rate</div></div>
+          <div class="step-item"><div class="step-number">4</div><div>Monthly transparency reports shared with donors</div></div>
+        </div>
+
+        <!-- total donations -->
+        <div class="impact-stats text-center">
+          <h4>Our Impact Together</h4>
+          <div class="row">
+            <div class="col-md-3 stat-item"><div class="stat-number" id="statAnimals">1247</div><div>Animals Rescued</div></div>
+            <div class="col-md-3 stat-item"><div class="stat-number" id="statDonations">840000</div><div>Donations Received (₹)</div></div>
+            <div class="col-md-3 stat-item"><div class="stat-number" id="statNGOs">45</div><div>Partner NGOs</div></div>
+            <div class="col-md-3 stat-item"><div class="stat-number" id="statCities">12</div><div>Cities Covered</div></div>
+          </div>
+        </div>
+
+        <!-- <button class="btn btn-donate mt-3" onclick="refreshDonations()">Refresh Total</button> -->
+      </div>
+    </div>
+
+    <!-- notifications section -->
+    <div id="notifications" class="content-section">
+      <div class="card">
+        <div class="card-header">🔔 Notifications</div>
+        <div class="card-body" id="notificationsContainer">
+          <div class="text-center text-muted">
+            <div class="spinner-border" role="status"></div>
+            <div class="mt-2">Loading notifications...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- VOLUNTEERING SECTION -->
+  <div id="volunteering" class="content-section">
+    <!-- Stats Row -->
+    <div class="row mb-4">
+      <div class="col-md-3">
+        <div class="card text-center" style="background: linear-gradient(135deg, #DEA773, #C46F36); color: white; border: none;">
+          <div class="card-body">
+            <h3 id="totalContributionsStats">0</h3>
+            <p class="mb-0">Total Contributions</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center" style="background: linear-gradient(135deg, #DEA773, #C46F36); color: white; border: none;">
+          <div class="card-body">
+            <h3 id="totalHoursStats">0</h3>
+            <p class="mb-0">Volunteer Hours</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center" style="background: linear-gradient(135deg, #DEA773, #C46F36); color: white; border: none;">
+          <div class="card-body">
+            <h3 id="totalBadgesStats">0</h3>
+            <p class="mb-0">Badges Earned</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card text-center" style="background: linear-gradient(135deg, #DEA773, #C46F36); color: white; border: none;">
+          <div class="card-body">
+            <h3 id="activeOpportunitiesStats">0</h3>
+            <p class="mb-0">Active Opportunities</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Explore Opportunities Card -->
+    <div class="card mb-4" style="border-left: 8px solid #DEA773; background: linear-gradient(135deg, rgba(222, 167, 115, 0.1), rgba(196, 111, 54, 0.05));">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h4 style="color: #38512F; font-weight: bold;">🌟 Explore Volunteer Opportunities</h4>
+            <p class="mb-3">Discover meaningful ways to make a difference in the lives of animals. Browse through available opportunities and find the perfect match for your skills and schedule.</p>
+            <ul class="mb-3">
+              <li>🏥 Shelter Support - Help with daily care</li>
+              <li>🚑 Emergency Rescue - Join rescue teams</li>
+              <li>📸 Documentation - Create awareness content</li>
+              <li>🎓 Education - Conduct community programs</li>
+            </ul>
+          </div>
+          <div style="font-size: 5rem; opacity: 0.15;">🌟</div>
+        </div>
+        <button class="btn btn-primary" onclick="window.location.href='../../../volunteering-opportunities.html'">
+          Browse All Opportunities →
+        </button>
+      </div>
+    </div>
+
+    <!-- My Volunteer History Card -->
+    <div class="card mb-4" style="border-left: 8px solid #38512F; background: linear-gradient(135deg, rgba(56, 81, 47, 0.1), rgba(74, 107, 58, 0.05));">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <h4 style="color: #38512F; font-weight: bold;">📚 My Volunteer History</h4>
+            <p class="mb-3">Track your volunteering journey, view your contributions, and celebrate your achievements. Access certificates and see the impact you've made.</p>
+            <ul class="mb-3">
+              <li>🏆 Achievement Badges - Earn recognition</li>
+              <li>📄 Certificates - Download completion certificates</li>
+              <li>⏰ Hour Tracking - Monitor volunteer time</li>
+              <li>🎯 Impact Reports - See your difference</li>
+            </ul>
+          </div>
+          <div style="font-size: 5rem; opacity: 0.15;">📚</div>
+        </div>
+        <button class="btn btn-primary" onclick="window.location.href='../../../volunteer-history.html'">
+          View My History →
+        </button>
+      </div>
+    </div>
+
+    <!-- Why Volunteering Matters -->
+    <div class="volunteer-info-box">
+      <h5><strong>🐾 Why Volunteering Matters</strong></h5>
+      <p class="mb-2">Every moment you dedicate to animal welfare creates a ripple effect of positive change. Your compassion and commitment help provide food, shelter, medical care, and most importantly, hope to animals in need.</p>
+      <p class="mb-0">Through PawBridge, volunteers like you have helped rescue thousands of injured animals, facilitated hundreds of successful adoptions, and raised awareness in communities across the country. Together, we're building a world where every animal is treated with dignity, compassion, and respect.</p>
+    </div>
+
+    <!-- Impact Stats -->
+    <div class="impact-stats text-center mt-4">
+      <h4>Volunteer Impact</h4>
+      <div class="row">
+        <div class="col-md-3 stat-item">
+          <div class="stat-number">450+</div>
+          <div>Active Volunteers</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number">12,500</div>
+          <div>Volunteer Hours</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number">850+</div>
+          <div>Animals Helped</div>
+        </div>
+        <div class="col-md-3 stat-item">
+          <div class="stat-number">25</div>
+          <div>Partner NGOs</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- profile section -->
+  <div id="profile" class="content-section profile-section">
+  <div class="card">
+    <div class="card-header">👤 My Profile</div>
+    <div class="card-body">
+        <form id="profileForm">
+          <div class="mb-3">
+            <label class="form-label">Full Name</label>
+            <input type="text" class="form-control" id="um_name" name="um_name" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" class="form-control" id="um_email" name="um_email" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Phone</label>
+            <input type="text" class="form-control" id="um_contact" name="um_contact">
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <textarea class="form-control" id="um_address" name="um_address"></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+        </form>
+        <div id="profileMessage" class="mt-3"></div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- JS -->
+  <script type="module">
+    import { getUser, logout } from '../../../Assets/js/auth.js'; 
+   function goToDonation() {
+     const user = JSON.parse(sessionStorage.getItem("user"));
+     window.location.href = `../../../payment.html?user=${user.um_id}`;
+   }
+   window.goToDonation = goToDonation;
+    
+    // Make logout available to inline HTML
+    window.logout = () => logout('user');
+
+    const loggedUser = getUser('user'); 
+    console.log(loggedUser);
+    if (!loggedUser) {
+        alert('Please login first.');
+        window.location.href = '../../../landing.html#login';
+    }
+
+    if (loggedUser) {
+      document.getElementById("userName").innerText = loggedUser.um_name || "user";
+      
+      sessionStorage.setItem("user", JSON.stringify(loggedUser));
+
+    }
+
+    function showSection(sectionId) {
+      document.querySelectorAll('.content-section').forEach(sec => sec.classList.remove('active'));
+      document.getElementById(sectionId).classList.add('active');
+
+      document.querySelectorAll('.sidebar-link').forEach(btn => btn.classList.remove('active'));
+      document.getElementById('nav-' + sectionId).classList.add('active');
+      if (sectionId === 'volunteering') loadVolunteeringStats();
+    }
+    window.showSection = showSection; 
+
+    // function logout() {
+    //   localStorage.removeItem('userToken');
+    //   window.location.href = '../../../landing.html#login';
+    // }
+
+    function refreshDonations() {
+      document.getElementById('statDonations').innerText = "850000";
+      alert("Total donations refreshed!");
+    }
+
+    function loadAllAdoptionPosts() {
+      const container = document.getElementById("adoptionPosts");
+      container.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
+
+      fetch("http://localhost:5001/adoptions/all")
+        .then(res => res.json())
+        .then(data => {
+          if(data.success) {
+            if(data.posts.length === 0) {
+              container.innerHTML = '<div class="alert alert-info">No adoption posts available.</div>';
+              return;
+            }
+
+            container.innerHTML = "";
+            data.posts.forEach(post => {
+              const col = document.createElement("div");
+              col.className = "col-md-4 mb-3";
+              col.innerHTML = `
+                <div class="card adoption-post">
+                  ${post.image_url ? `<img src="${post.image_url}" class="adoption-image">` : ''}
+                  <div class="card-body">
+                    <h5 class="card-title">${post.animal_name} (${post.atm_name})</h5>
+                    <p><strong>Breed:</strong> ${post.breed} | <strong>Age:</strong> ${post.age_months} months | <strong>Gender:</strong> ${post.gender}</p>
+                    <p>${post.description}</p>
+                    <hr>
+                    <p><strong>NGO:</strong> ${post.ngo_name}</p>
+                    <p><strong>Contact:</strong> ${post.contact_number || 'N/A'} | <strong>Email:</strong> ${post.email || 'N/A'}</p>
+                  </div>
+                </div>
+              `;
+              container.appendChild(col);
+            });
+          } else {
+            container.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          container.innerHTML = '<div class="alert alert-danger">Error loading adoption posts.</div>';
+        });
+    }
+
+    function loadUserReports() {
+  // const user = JSON.parse(localStorage.getItem("user"));
+  const userId = loggedUser.um_id; 
+  const container = document.getElementById("myReportsContainer");
+  container.innerHTML = '<div class="spinner-border" role="status"></div>';
+
+  fetch(`http://localhost:5001/user-reports/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) {
+        container.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+        return;
+      }
+
+      if (data.reports.length === 0) {
+        container.innerHTML = `<div class="alert alert-info">You have not submitted any reports.</div>`;
+        return;
+      }
+
+      container.innerHTML = "";
+      data.reports.forEach(report => {
+        const div = document.createElement("div");
+        div.className = "card mb-3";
+        div.innerHTML = `
+          <div class="card-header">
+            Report #${report.ir_id} - <span class="status-badge status-${report.ir_status.toLowerCase().replace(/ /g,'-')}">${report.ir_status.replace(/_/g,' ')}</span>
+          </div>
+          <div class="card-body">
+            ${report.ir_image_url ? `<img src="http://localhost:5001/uploads/injury_reports/${report.ir_image_url}" class="img-fluid mb-2" style="max-height:200px; object-fit:cover;">` : ''}
+            <p><strong>Description:</strong> ${report.ir_description}</p>
+            
+            <p><strong>Assigned NGO:</strong> ${report.assigned_ngo_name || "Not assigned yet"}</p>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }) //<p><strong>Location:</strong> ${report.ir_location_address}</p>
+    .catch(err => {
+      console.error(err);
+      container.innerHTML = '<div class="alert alert-danger">Error loading your reports.</div>';
+    });
+}
+
+function loadUserNotifications() {
+  // const user = JSON.parse(localStorage.getItem("user"));
+  if(!loggedUser) return;
+
+  const userId = loggedUser.um_id; 
+  const container = document.getElementById("notificationsContainer");
+  container.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
+
+  fetch(`http://localhost:5001/user/notifications/${userId}`)
+    .then(res => res.json())
+    .then(data => {
+      if (!data.success) {
+        container.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+        return;
+      }
+
+      if(data.notifications.length === 0) {
+        container.innerHTML = '<div class="alert alert-info">No notifications at the moment.</div>';
+        return;
+      }
+
+      container.innerHTML = '';
+      data.notifications.forEach(notif => {
+        const div = document.createElement("div");
+        div.className = "alert alert-light border-start border-4 border-primary mb-2 p-3";
+        div.innerHTML = `
+          <strong>${notif.title}</strong>
+          <p class="mb-1">${notif.message}</p>
+          <small class="text-muted">${new Date(notif.created_at).toLocaleString()}</small>
+        `;
+        container.appendChild(div);
+      });
+    })
+    .catch(err => {
+      console.error(err);
+      container.innerHTML = '<div class="alert alert-danger">Error loading notifications.</div>';
+    });
+}
+ function loadUserProfile() {
+  // const user = JSON.parse(localStorage.getItem("user"));
+  if (!loggedUser) return;
+
+  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        document.getElementById("um_name").value = data.user.um_name || "";
+        document.getElementById("um_email").value = data.user.um_email || "";
+        document.getElementById("um_contact").value = data.user.um_contact || "";
+        document.getElementById("um_address").value = data.user.um_address || "";
+      } else {
+        document.getElementById("profileMessage").innerHTML =
+          `<div class="alert alert-danger">${data.message}</div>`;
+      }
+    })
+    .catch(err => console.error(err));
+}
+
+
+document.getElementById("profileForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  // const user = JSON.parse(localStorage.getItem("user"));
+  if (!loggedUser) return;
+
+  const um_name = document.getElementById("um_name").value.trim();
+  const um_email = document.getElementById("um_email").value.trim();
+  const um_contact = document.getElementById("um_contact").value.trim();
+  const um_address = document.getElementById("um_address").value.trim();
+
+  const msgBox = document.getElementById("profileMessage");
+
+  //validation
+  if (!um_name) {
+    msgBox.innerHTML = `<div class="alert alert-danger">Name is required.</div>`;
+    return;
+  }
+  if (!um_email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(um_email)) {
+    msgBox.innerHTML = `<div class="alert alert-danger">Enter a valid email address.</div>`;
+    return;
+  }
+  if (um_contact && !/^\d{10}$/.test(um_contact)) {
+    msgBox.innerHTML = `<div class="alert alert-danger">Phone number must be 10 digits.</div>`;
+    return;
+  }
+  if (um_address.length > 250) {
+    msgBox.innerHTML = `<div class="alert alert-danger">Address should not exceed 250 characters.</div>`;
+    return;
+  }
+
+  const updatedProfile = { um_name, um_email, um_contact, um_address };
+
+  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`, {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(updatedProfile)
+  })
+    .then(res => res.json())
+    .then(data => {
+  if (data.success) {
+    msgBox.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+    
+    //updated loggedUser object
+    loggedUser.um_name = updatedProfile.um_name;
+    loggedUser.um_email = updatedProfile.um_email;
+    loggedUser.um_contact = updatedProfile.um_contact;
+    loggedUser.um_address = updatedProfile.um_address;
+
+    //save back to sessionStorage
+    sessionStorage.setItem("user_user", JSON.stringify(loggedUser));
+
+    //update ui
+    document.getElementById("userName").innerText = loggedUser.um_name;
+  } else {
+    msgBox.innerHTML = `<div class="alert alert-danger">${data.message}</div>`;
+  }
+})
+
+    .catch(err => {
+      console.error(err);
+      msgBox.innerHTML = '<div class="alert alert-danger">Error updating profile.</div>';
+    });
+});
+
+
+//load profile when section is opened
+document.getElementById("nav-profile").addEventListener("click", loadUserProfile);
+
+
+// Load volunteering stats
+function loadVolunteeringStats() {
+  // TODO: Fetch from backend API
+  // For now, using sample data
+  const stats = {
+    totalContributions: 5,
+    totalHours: 152,
+    totalBadges: 6,
+    activeOpportunities: 50
+  };
+
+  const contribEl = document.getElementById('totalContributionsStats');
+  const hoursEl = document.getElementById('totalHoursStats');
+  const badgesEl = document.getElementById('totalBadgesStats');
+  const activeEl = document.getElementById('activeOpportunitiesStats');
+
+  if (contribEl) contribEl.textContent = stats.totalContributions;
+  if (hoursEl) hoursEl.textContent = stats.totalHours;
+  if (badgesEl) badgesEl.textContent = stats.totalBadges;
+  if (activeEl) activeEl.textContent = stats.activeOpportunities;
+}
+window.loadVolunteeringStats = loadVolunteeringStats;
+
+
+
+    window.onload = function() {
+      loadAllAdoptionPosts();
+      loadUserReports();
+      loadUserNotifications();
+    }
+  </script>
+<!-- sticky vet ad -->
+<div id="vetAdSidebar" class="vet-ad-sidebar">
+  <a href="https://maps.google.com?q=Happy+Paws+Vet+Clinic" target="_blank">
+    <img src="../../../Assets/images/vet ad.png" alt="Vet Ad">
+  </a>
+  <div class="vet-ad-text">
+    <h5>Happy Paws Vet</h5>
+    <p>24/7 Emergency · Vaccinations</p>
+  </div>
+</div>
+
+<style>
+  .vet-ad-sidebar {
+    position: fixed;
+    top: 80px;  
+    right: 10px;
+    width: 220px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+    z-index: 1050;
+    text-align: center;
+  }
+  .vet-ad-sidebar img {
+    width: 100%;
+    border-radius: 8px;
+  }
+  .vet-ad-text {
+    margin-top: 10px;
+  }
+  .vet-ad-text h5 {
+    margin: 0;
+    font-size: 16px;
+  }
+  .vet-ad-text p {
+    font-size: 13px;
+    color: #666;
+  }
+</style>
+
+</body>
+</html>

@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - PawBridge</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #FEF5E7;
+      color: #3A3630;
+    }
+
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #3A3630;
+      padding: 30px 20px;
+      color: #fff;
+      position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar h3 {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+      font-weight: bold;
+    }
+
+    .sidebar a {
+      display: block;
+      color: #F0DDBF;
+      margin: 10px 0;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+
+    .sidebar a:hover, .sidebar a.active {
+      color: #DEA773;
+      background-color: rgba(240, 221, 191, 0.1);
+      text-decoration: none;
+    }
+
+    .main {
+      margin-left: 260px;
+      padding: 30px;
+    }
+
+    .logout-btn {
+      background-color: #3A3630;
+      color: #F0DDBF;
+      font-weight: 600;
+      border: none;
+      padding: 8px;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    .logout-btn:hover {
+      background-color: #27241f;
+      color: #DEA773;
+    }
+
+    .content-section {
+      display: none;
+    }
+
+    .content-section.active {
+      display: block;
+    }
+
+    .card {
+      border: none;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+
+    .card-header {
+      background-color: #3A3630;
+      color: white;
+      border-radius: 12px 12px 0 0 !important;
+      font-weight: 600;
+    }
+
+    .btn-primary {
+      background-color: #DEA773;
+      border-color: #DEA773;
+    }
+
+    .btn-primary:hover {
+      background-color: #C46F36;
+      border-color: #C46F36;
+    }
+
+    .ngo-application {
+      border: 1px solid #DEA773;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 20px;
+      background-color: #FFF9F2;
+    }
+
+    .status-badge {
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+
+    .status-pending { background-color: #ffeaa7; color: #2d3436; }
+    .status-approved { background-color: #00b894; color: white; }
+    .status-rejected { background-color: #e17055; color: white; }
+
+    .document-preview {
+      max-width: 200px;
+      max-height: 200px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 2px solid #DEA773;
+    }
+
+    .modal-content {
+      border-radius: 15px;
+    }
+
+    .location-map {
+      height: 300px;
+      border-radius: 10px;
+      margin: 15px 0;
+    }
+
+    .stats-card {
+      background: linear-gradient(135deg, #3A3630, #4a453e);
+      color: white;
+    }
+
+    .approval-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .coordinates-input {
+      background-color: #f8f9fa;
+      border: 1px solid #DEA773;
+      border-radius: 5px;
+      padding: 5px 10px;
+      font-size: 0.9em;
+    }
+
+    .urgent-application {
+      border-left: 5px solid #dc3545;
+      animation: pulse-border 2s infinite;
+    }
+
+    #ngoListTable {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  background-color: #FFF9F2; /* Light card-like background */
+}
+
+#ngoListTable thead {
+  background-color: #3A3630;
+  color: #F0DDBF;
+  font-weight: 600;
+}
+
+#ngoListTable thead th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+#ngoListTable tbody td {
+  vertical-align: middle;
+  text-align: center;
+  padding: 12px;
+}
+
+#ngoListTable tbody tr:nth-child(even) {
+  background-color: #FEF5E7;
+}
+
+#ngoListTable tbody tr:hover {
+  background-color: #FFF3E0;
+  transform: scale(1.01);
+  transition: all 0.2s;
+}
+
+#ngoListTable .btn-sm {
+  padding: 4px 10px;
+  font-size: 0.85rem;
+  border-radius: 8px;
+}
+
+#ngoListTable .btn-outline-primary {
+  color: #3A3630;
+  border-color: #DEA773;
+}
+
+#ngoListTable .btn-outline-primary:hover {
+  background-color: #DEA773;
+  color: #fff;
+  border-color: #DEA773;
+}
+
+#ngoListTable .btn-warning {
+  background-color: #DEA773;
+  border-color: #DEA773;
+  color: #fff;
+}
+
+#ngoListTable .btn-warning:hover {
+  background-color: #C46F36;
+  border-color: #C46F36;
+}
+
+#ngoListTable .status-badge {
+  display: inline-block;
+  min-width: 90px;
+  text-align: center;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.status-pending { background-color: #ffeaa7; color: #2d3436; }
+.status-approved { background-color: #00b894; color: #fff; }
+.status-rejected { background-color: #e17055; color: #fff; }
+
+
+    @keyframes pulse-border {
+      0% { border-left-color: #dc3545; }
+      50% { border-left-color: #ff6b7a; }
+      100% { border-left-color: #dc3545; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="sidebar">
+  <h3>Admin Dashboard</h3>
+  <a href="#" onclick="showSection('dashboard')" id="nav-dashboard" class="active">📊 Dashboard</a>
+  <a href="#" onclick="showSection('ngo-applications')" id="nav-applications">🏢 NGO Applications </a>
+  <!-- <span class="badge bg-warning ms-2" id="applicationsBadge"></span> -->
+  <!-- <a href="#" onclick="showSection('reports-overview')" id="nav-reports">📋 Reports Overview</a>
+  <a href="#" onclick="showSection('analytics')" id="nav-analytics">📈 Analytics</a> -->
+  <a href="#" onclick="showSection('ngo-list')" id="nav-ngolist">📋 NGOs List</a>
+  <a href="#" onclick="showSection('rejected-reports')" id="nav-rejected-reports">🚫 Rejected Reports</a>
+  <div class="flex-grow-1"></div>
+  <button class="logout-btn mt-4" onclick="logout()">Logout</button>
+</div>
+
+<div class="main">
+  <!-- Dashboard Section -->
+  <div id="dashboard" class="content-section active">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Admin Overview</h2>
+      <button class="btn btn-primary" onclick="loadDashboardStats()">🔄 Refresh</button>
+    </div>
+
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card stats-card">
+          <div class="card-body text-center">
+            <h5 class="card-title">🏢 Total NGOs</h5>
+            <h2 id="totalNGOs">0</h2>
+            <p class="card-text">Verified partners</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stats-card">
+          <div class="card-body text-center">
+            <h5 class="card-title">⏳ Pending Apps</h5>
+            <h2 id="pendingApps">0</h2>
+            <p class="card-text">Awaiting review</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stats-card">
+          <div class="card-body text-center">
+            <h5 class="card-title">🚨 Active Reports</h5>
+            <h2 id="activeReports">0</h2>
+            <p class="card-text">In progress</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card stats-card">
+          <div class="card-body text-center">
+            <h5 class="card-title">👥 Total Users</h5>
+            <h2 id="totalUsers">0</h2>
+            <p class="card-text">Registered</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mt-4">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            Recent Activity
+          </div>
+          <div class="card-body" id="recentActivity">
+            <div class="text-center">
+              <div class="spinner-border" role="status"></div>
+              <div class="mt-2">Loading recent activity...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NGO Applications Section -->
+  <div id="ngo-applications" class="content-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>NGO Applications</h3>
+      <button class="btn btn-primary" onclick="loadNGOApplications()">🔄 Refresh</button>
+    </div>
+    <div id="applicationsContainer">
+      <div class="text-center">
+        <div class="spinner-border" role="status"></div>
+        <div class="mt-2">Loading applications...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NGOs List Section -->
+  <div id="ngo-list" class="content-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>NGOs List</h3>
+      <button class="btn btn-primary" onclick="loadNGOList()">🔄 Refresh</button>
+    </div>
+    <div class="table-responsive">
+      <table class="table table-striped" id="ngoListTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Founder</th>
+            <th>Email</th>
+            <th>Contact</th>
+            <th>Status</th>
+            <th>Document</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Data will be populated dynamically -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- REJECTED REPORTS SECTION -->
+<div id="rejected-reports" class="content-section">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>🚫 Rejected Reports (All NGOs Declined)</h3>
+    <button class="btn btn-primary" onclick="loadRejectedReports()">🔄 Refresh</button>
+  </div>
+  <div class="alert alert-warning">
+    <strong>⚠️ Manual Intervention Required:</strong> These reports were rejected by all NGOs within 10km radius. Please take appropriate action.
+  </div>
+  <div id="rejectedReportsContainer">
+    <div class="text-center">
+      <div class="spinner-border" role="status"></div>
+      <div class="mt-2">Loading rejected reports...</div>
+    </div>
+  </div>
+</div>
+
+  <!-- Reports Overview Section -->
+  <div id="reports-overview" class="content-section">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h3>System Reports Overview</h3>
+      <button class="btn btn-primary" onclick="loadReportsOverview()">🔄 Refresh</button>
+    </div>
+    <div id="reportsContainer">
+      <div class="text-center">
+        <div class="spinner-border" role="status"></div>
+        <div class="mt-2">Loading reports...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Analytics Section -->
+  <div id="analytics" class="content-section">
+    <div class="card">
+      <div class="card-header">
+        <h4>Platform Analytics</h4>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6>NGO Performance Metrics</h6>
+            <div class="alert alert-info">
+              <ul class="mb-0">
+                <li>Average response time: <strong>15 minutes</strong></li>
+                <li>Success rate: <strong>87%</strong></li>
+                <li>Cases resolved this month: <strong>45</strong></li>
+                <li>Most active region: <strong>Pune</strong></li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <h6>User Engagement</h6>
+            <div class="alert alert-success">
+              <ul class="mb-0">
+                <li>New registrations this month: <strong>28</strong></li>
+                <li>Reports submitted: <strong>52</strong></li>
+                <li>Adoption inquiries: <strong>23</strong></li>
+                <li>Platform uptime: <strong>99.8%</strong></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- NGO Application Modal -->
+<div class="modal fade" id="ngoApplicationModal" tabindex="-1">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">NGO Application Review</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalBody">
+        <!-- Content loaded dynamically -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Location Selection Modal -->
+<div class="modal fade" id="locationModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Set NGO Location</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Please click on the map to set the NGO's location for emergency routing:</p>
+        <div id="locationMap" class="location-map"></div>
+        <div class="mt-3">
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Latitude:</label>
+              <input type="text" id="modalLatitude" class="form-control" readonly>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Longitude:</label>
+              <input type="text" id="modalLongitude" class="form-control" readonly>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-success" id="approveWithLocation">Approve NGO</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script type="module">
+  // Get user info from localStorage
+  // const user = JSON.parse(localStorage.getItem('user') || '{}');
+  import { getUser, logout } from '../../../Assets/js/auth.js'; 
+  window.logout = () => logout('user');
+
+  const user = getUser('admin');
+  console.log(user);
+  
+  if (!user.um_id || user.rm_name !== 'admin') {
+    alert('Access denied. Admin login required.');
+    window.location.href = '../../../landing.html#login';
+  }
+
+  let currentApplicationId = null;
+  let locationMap = null;
+  let locationMarker = null;
+
+  // Navigation function
+  function showSection(sectionId) {
+  document.querySelectorAll('.content-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.sidebar a').forEach(l => l.classList.remove('active'));
+
+  const section = document.getElementById(sectionId);
+  if (section) section.classList.add('active');
+
+  const navMap = {
+    'dashboard': 'nav-dashboard',
+    'ngo-applications': 'nav-applications',
+    'ngo-list': 'nav-ngolist',
+    'rejected-reports': 'nav-rejected-reports'
+  };
+
+  const navLink = document.getElementById(navMap[sectionId]);
+  if (navLink) navLink.classList.add('active');
+
+  if (sectionId === 'dashboard') loadDashboardStats();
+  else if (sectionId === 'ngo-applications') loadNGOApplications();
+  else if (sectionId === 'reports-overview') loadReportsOverview();
+}
+  window.showSection = showSection; 
+
+  // Load dashboard statistics
+  async function loadDashboardStats() {
+  try {
+    const [ngoAppsRes, rejectedRes] = await Promise.all([
+      fetch('http://localhost:5001/admin/ngo-applications'),
+      fetch('http://localhost:5001/admin/rejected-reports')
+    ]);
+    
+    const ngoAppsData = await ngoAppsRes.json();
+    const rejectedData = await rejectedRes.json();
+    
+    document.getElementById('totalNGOs').textContent = '12';
+    document.getElementById('pendingApps').textContent = ngoAppsData.success ? ngoAppsData.applications.length : '0';
+    document.getElementById('activeReports').textContent = rejectedData.success ? rejectedData.reports.length : '0';
+    document.getElementById('totalUsers').textContent = '156';
+    
+    // Update badge on rejected reports nav
+    const rejectedCount = rejectedData.success ? rejectedData.reports.length : 0;
+    const navLink = document.getElementById('nav-rejected-reports');
+    if (navLink) {
+      const existingBadge = navLink.querySelector('.badge');
+      if (existingBadge) existingBadge.remove();
+      if (rejectedCount > 0) {
+        navLink.innerHTML += ` <span class="badge bg-danger ms-2">${rejectedCount}</span>`;
+      }
+    }
+    
+    loadRecentActivity();
+  } catch (error) {
+    console.error('Error loading dashboard stats:', error);
+  }
+}
+
+  // Load recent activity
+  function loadRecentActivity() {
+    const activities = [
+      'New NGO application from "Animal Rescue Foundation"',
+      'User "John Doe" submitted injury report',
+      'NGO "Pet Care Center" accepted emergency case',
+      'New user registration: jane@example.com',
+      'Adoption post created for "Buddy the Dog"'
+    ];
+    
+    const activityContainer = document.getElementById('recentActivity');
+    activityContainer.innerHTML = activities.map((activity, index) => `
+      <div class="d-flex justify-content-between align-items-center mb-2 p-2 bg-light rounded">
+        <div>${activity}</div>
+        <small class="text-muted">${index + 1} hours ago</small>
+      </div>
+    `).join('');
+  }
+
+  // Load NGO applications
+  async function loadNGOApplications() {
+    const container = document.getElementById('applicationsContainer');
+    container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
+    
+    try {
+      const response = await fetch('http://localhost:5001/admin/ngo-applications');
+      const data = await response.json();
+      
+      if (data.success && data.applications.length > 0) {
+        container.innerHTML = data.applications.map(app => `
+          <div class="ngo-application ${isUrgentApplication(app) ? 'urgent-application' : ''}">
+            <div class="row">
+              <div class="col-md-8">
+                <h5>${app.ngo_name}</h5>
+                <p><strong>Registration No:</strong> ${app.registration_number}</p>
+                <p><strong>Founder:</strong> ${app.founder_name}</p>
+                <p><strong>Email:</strong> ${app.email}</p>
+                <p><strong>Contact:</strong> ${app.contact}</p>
+                <p><strong>Address:</strong> ${app.address}</p>
+                <div class="d-flex align-items-center">
+                  <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+                  <small class="text-muted ms-3">Applied: ${new Date(app.created_at).toLocaleDateString()}</small>
+                </div>
+                <div class="approval-buttons">
+                  <button class="btn btn-success" onclick="showLocationModal(${app.ngo_id}, '${app.ngo_name}')">
+                    ✅ Approve
+                  </button>
+                  <button class="btn btn-danger" onclick="rejectApplication(${app.ngo_id})">
+                    ❌ Reject
+                  </button>
+                  <button class="btn btn-info" onclick="viewApplicationDetails(${app.ngo_id})">
+                    📄 View Details
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4 text-center">
+                <div class="mb-2">
+                  <strong>Document:</strong>
+                </div>
+                <a href="http://localhost:5001/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-outline-primary btn-sm">
+                  📄 View Document
+                </a>
+              </div>
+            </div>
+          </div>
+        `).join('');
+      } else {
+        container.innerHTML = `
+          <div class="text-center text-muted">
+            <div style="font-size: 48px;">🏢</div>
+            <h5>No Pending Applications</h5>
+            <p>All NGO applications have been processed.</p>
+          </div>
+        `;
+      }
+    } catch (error) {
+      console.error('Error loading NGO applications:', error);
+      container.innerHTML = '<div class="alert alert-danger">Error loading applications.</div>';
+    }
+  }
+
+  // Show location selection modal
+  function showLocationModal(ngoId, ngoName) {
+    currentApplicationId = ngoId;
+    document.querySelector('#locationModal .modal-title').textContent = `Set Location for ${ngoName}`;
+    
+    const modal = new bootstrap.Modal(document.getElementById('locationModal'));
+    modal.show();
+    
+    // Initialize map after modal is shown
+    setTimeout(() => {
+      if (locationMap) {
+        locationMap.remove();
+      }
+      
+      locationMap = L.map('locationMap').setView([18.5204, 73.8567], 13);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; OpenStreetMap contributors'
+      }).addTo(locationMap);
+      
+      locationMap.on('click', function(e) {
+        const { lat, lng } = e.latlng;
+        
+        if (locationMarker) {
+          locationMarker.remove();
+        }
+        
+        locationMarker = L.marker([lat, lng]).addTo(locationMap);
+        document.getElementById('modalLatitude').value = lat.toFixed(6);
+        document.getElementById('modalLongitude').value = lng.toFixed(6);
+      });
+    }, 500);
+  }
+
+  // Approve NGO with location
+  document.getElementById('approveWithLocation').addEventListener('click', async () => {
+    const lat = document.getElementById('modalLatitude').value;
+    const lng = document.getElementById('modalLongitude').value;
+    
+    if (!lat || !lng) {
+      alert('Please select a location on the map first.');
+      return;
+    }
+    
+    try {
+      const response = await fetch('http://localhost:5001/admin/ngo-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ngo_id: currentApplicationId,
+          decision: 'Approved',
+          coordinates: { lat: parseFloat(lat), lng: parseFloat(lng) }
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('NGO approved successfully!');
+        bootstrap.Modal.getInstance(document.getElementById('locationModal')).hide();
+        loadNGOApplications();
+        loadDashboardStats();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error approving NGO:', error);
+      alert('Network error. Please try again.');
+    }
+  });
+
+  // Reject application
+  async function rejectApplication(ngoId) {
+    if (!confirm('Are you sure you want to reject this NGO application?')) {
+      return;
+    }
+    
+    try {
+      const response = await fetch('http://localhost:5001/admin/ngo-decision', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ngo_id: ngoId,
+          decision: 'Rejected'
+        })
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        alert('NGO application rejected.');
+        loadNGOApplications();
+        loadDashboardStats();
+      } else {
+        alert('Error: ' + data.message);
+      }
+    } catch (error) {
+      console.error('Error rejecting NGO:', error);
+      alert('Network error. Please try again.');
+    }
+  }
+
+  // View application details
+  function viewApplicationDetails(ngoId) {
+    // This would load detailed info in the modal
+    // For now, show basic implementation
+    alert('Detailed view functionality would be implemented here. NGO ID: ' + ngoId);
+  }
+
+  // Load reports overview
+  function loadReportsOverview() {
+    const container = document.getElementById('reportsContainer');
+    
+    // Placeholder implementation
+    container.innerHTML = `
+      <div class="row">
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">Report Statistics</div>
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li><strong>Total Reports:</strong> 156</li>
+                <li><strong>Resolved:</strong> 134</li>
+                <li><strong>In Progress:</strong> 18</li>
+                <li><strong>Pending:</strong> 4</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="card">
+            <div class="card-header">Animal Types</div>
+            <div class="card-body">
+              <ul class="list-unstyled">
+                <li><strong>Dogs:</strong> 89 reports</li>
+                <li><strong>Cats:</strong> 34 reports</li>
+                <li><strong>Cows:</strong> 23 reports</li>
+                <li><strong>Others:</strong> 10 reports</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  // Helper function to determine if application is urgent
+  function isUrgentApplication(app) {
+    const daysSinceApplied = (new Date() - new Date(app.created_at)) / (1000 * 60 * 60 * 24);
+    return daysSinceApplied > 3; // Mark as urgent if pending for more than 3 days
+  }
+
+  // Logout function
+  // function logout() {
+  //   if (confirm('Are you sure you want to logout?')) {
+  //     localStorage.removeItem('user');
+  //     window.location.href = '../../../landing.html#login';
+  //   }
+  // }
+
+  // Load NGOs List
+async function loadNGOList() {
+  const tableBody = document.querySelector('#ngoListTable tbody');
+  tableBody.innerHTML = `<tr><td colspan="8" class="text-center">
+    <div class="spinner-border"></div> Loading...</td></tr>`;
+
+  try {
+    const res = await fetch('http://localhost:5001/admin/ngo-applications-all');
+    const data = await res.json();
+
+    if (data.success && data.applications.length > 0) {
+      tableBody.innerHTML = data.applications.map(app => `
+        <tr>
+          <td>${app.ngo_id}</td>
+          <td>${app.ngo_name}</td>
+          <td>${app.founder_name}</td>
+          <td>${app.email}</td>
+          <td>${app.contact}</td>
+          <td>
+            <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
+          </td>
+          <td>
+            <a href="http://localhost:5001/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View</a>
+          </td>
+          <td>
+            <button class="btn btn-sm btn-warning" onclick="editNGOStatus(${app.ngo_id}, '${app.status}')">✏️ Edit</button>
+          </td>
+        </tr>
+      `).join('');
+    } else {
+      tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-muted">No NGOs found.</td></tr>`;
+    }
+  } catch (err) {
+    console.error(err);
+    tableBody.innerHTML = `<tr><td colspan="8" class="text-center text-danger">Error loading NGOs.</td></tr>`;
+  }
+}
+
+// Load rejected reports
+async function loadRejectedReports() {
+  const container = document.getElementById('rejectedReportsContainer');
+  container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
+
+  try {
+    const response = await fetch('http://localhost:5001/admin/rejected-reports');
+    const data = await response.json();
+// // ${report.attempted_count} out of ${report.total_ngos_in_range} 
+
+    if (data.success && data.reports.length > 0) {
+      container.innerHTML = data.reports.map(report => `
+        <div class="card mb-3 border-danger">
+          <div class="card-header bg-danger text-white">
+            <h5 class="mb-0">Report #${report.ir_id} - ${report.atm_name}</h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-8">
+                <h6><strong>Location:</strong> ${report.ir_location_address}</h6>
+                <p><strong>Description:</strong> ${report.ir_description || 'No description'}</p>
+                <p><strong>Reporter:</strong> ${report.reporter_name} (${report.um_email})</p>
+                ${report.um_contact ? `<p><strong>Contact:</strong> ${report.um_contact}</p>` : ''}
+                
+                <div class="alert alert-warning mt-3">
+                  <strong>Routing Summary:</strong><br>
+                 NGO rejected this report.
+                </div>
+
+                <p><strong>Coordinates:</strong> ${report.ir_latitude}, ${report.ir_longitude}</p>
+                <p><small class="text-muted">Reported: ${new Date(report.created_on).toLocaleString()}</small></p>
+                <p><small class="text-muted">Last Updated: ${new Date(report.updated_on).toLocaleString()}</small></p>
+
+                <div class="mt-3">
+                  <button class="btn btn-primary" onclick="showManualAssignModal(${report.ir_id})">
+                    🔧 Manually Assign to NGO
+                  </button>
+                  <button class="btn btn-info" onclick="viewOnMap(${report.ir_latitude}, ${report.ir_longitude})">
+                    🗺️ View on Map
+                  </button>
+                  <button class="btn btn-secondary" onclick="contactReporter('${report.um_email}', '${report.um_contact || 'N/A'}')">
+                    📞 Contact Reporter
+                  </button>
+                </div>
+              </div>
+              <div class="col-md-4 text-center">
+                ${report.ir_image_url ? `
+                  <img src="http://localhost:5001/uploads/injury_reports/${report.ir_image_url}" class="img-fluid rounded shadow" style="max-height: 250px;" alt="Report Image">
+                ` : '<div class="text-muted">No image available</div>'}
+              </div>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      container.innerHTML = `
+        <div class="text-center text-success p-5">
+          <div style="font-size: 64px;">✅</div>
+          <h5 class="mt-3">No Rejected Reports</h5>
+          <p class="text-muted">All reports are being handled by NGOs. Great job!</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Error loading rejected reports:', error);
+    container.innerHTML = '<div class="alert alert-danger">Error loading rejected reports.</div>';
+  }
+}
+
+// Show manual assignment modal
+function showManualAssignModal(reportId) {
+  const modalHTML = `
+    <div class="modal fade" id="manualAssignModal" tabindex="-1">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Manually Assign Report #${reportId}</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>Select an NGO to manually assign this report to:</p>
+            <div class="mb-3">
+              <label class="form-label">Select NGO:</label>
+              <select class="form-select" id="manualNGOSelect">
+                <option value="">Loading NGOs...</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Admin Notes (optional):</label>
+              <textarea class="form-control" id="adminNotes" rows="3" placeholder="Any special instructions or notes..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" onclick="submitManualAssignment(${reportId})">Assign Report</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  // Remove existing modal if any
+  const existingModal = document.getElementById('manualAssignModal');
+  if (existingModal) existingModal.remove();
+
+  // Add modal to body
+  document.body.insertAdjacentHTML('beforeend', modalHTML);
+
+  // Load NGOs
+  loadNGOsForAssignment();
+
+  // Show modal
+  const modal = new bootstrap.Modal(document.getElementById('manualAssignModal'));
+  modal.show();
+}
+
+// Load NGOs for dropdown
+async function loadNGOsForAssignment() {
+  try {
+    const response = await fetch('http://localhost:5001/admin/ngo-applications-app');
+    const data = await response.json();
+
+    const select = document.getElementById('manualNGOSelect');
+    if (data.success && data.applications.length > 0) {
+      const approvedNGOs = data.applications.filter(ngo => ngo.status === 'Approved');
+      
+      if (approvedNGOs.length > 0) {
+        select.innerHTML = '<option value="">-- Select NGO --</option>' + 
+          approvedNGOs.map(ngo => `
+            <option value="${ngo.ngo_id}">${ngo.ngo_name} - ${ngo.email}</option>
+          `).join('');
+      } else {
+        select.innerHTML = '<option value="">No approved NGOs available</option>';
+      }
+    } else {
+      select.innerHTML = '<option value="">No NGOs found</option>';
+    }
+  } catch (err) {
+    console.error(err);
+    document.getElementById('manualNGOSelect').innerHTML = '<option value="">Error loading NGOs</option>';
+  }
+}
+
+// Submit manual assignment
+async function submitManualAssignment(reportId) {
+  const ngoId = document.getElementById('manualNGOSelect').value;
+  const adminNotes = document.getElementById('adminNotes').value;
+
+  if (!ngoId) {
+    alert('Please select an NGO');
+    return;
+  }
+
+  try {
+    const response = await fetch('http://localhost:5001/admin/manually-assign-report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ reportId, ngoId, adminNotes })
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      alert(data.message);
+      bootstrap.Modal.getInstance(document.getElementById('manualAssignModal')).hide();
+      loadRejectedReports();
+      loadDashboardStats();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Network error. Please try again.');
+  }
+}
+
+// Helper functions
+function viewOnMap(lat, lng) {
+  window.open(`https://www.google.com/maps?q=${lat},${lng}`, '_blank');
+}
+
+function contactReporter(email, contact) {
+  alert(`Reporter Contact:\n\nEmail: ${email}\nPhone: ${contact}\n\nYou can reach out to them directly.`);
+}
+
+// Expose functions globally
+window.loadRejectedReports = loadRejectedReports;
+window.showManualAssignModal = showManualAssignModal;
+window.submitManualAssignment = submitManualAssignment;
+window.viewOnMap = viewOnMap;
+window.contactReporter = contactReporter;
+
+// Edit NGO Status
+function editNGOStatus(ngoId, currentStatus) {
+  const newStatus = prompt('Enter new status (Pending / Approved / Rejected):', currentStatus);
+  if (!newStatus) return;
+
+  if (!['Pending','Approved','Rejected'].includes(newStatus)) {
+    alert('Invalid status value!');
+    return;
+  }
+
+  fetch('http://localhost:5001/admin/ngo-decision', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ngo_id: ngoId, decision: newStatus })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      alert('Status updated successfully!');
+      loadNGOList();
+      loadDashboardStats();
+    } else {
+      alert('Error: ' + data.message);
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert('Network error. Please try again.');
+  });
+}
+
+window.showSection = showSection;
+window.loadNGOApplications = loadNGOApplications;
+window.loadNGOList = loadNGOList;
+window.editNGOStatus = editNGOStatus;
+window.rejectApplication = rejectApplication;
+window.viewApplicationDetails = viewApplicationDetails;
+window.showLocationModal = showLocationModal;
+
+window.onload = () => {
+  loadDashboardStats();
+};
+
+</script>
+
+</body>
+</html>

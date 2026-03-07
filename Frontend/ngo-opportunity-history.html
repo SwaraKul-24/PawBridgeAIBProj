@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posted Opportunities - PawBridge NGO</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #FEF5E7;
+            color: #3A3630;
+        }
+
+        .back-header {
+            background-color: #38512F;
+            padding: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            background-color: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #38512F, #4a6b3a);
+            padding: 60px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-weight: bold;
+            font-size: 2.5rem;
+        }
+
+        .filters-section {
+            background-color: #FFF9F2;
+            padding: 25px 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-select {
+            border: 2px solid #38512F;
+            border-radius: 20px;
+            padding: 8px 15px;
+            color: #3A3630;
+            font-weight: 500;
+            margin: 5px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(56, 81, 47, 0.25);
+        }
+
+        /* Opportunity Cards */
+        .opportunity-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border-left: 5px solid #38512F;
+            position: relative;
+        }
+
+        .opportunity-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+        }
+
+        .opportunity-card.locked {
+            border-left-color: #95a5a6;
+            opacity: 0.8;
+            background: linear-gradient(135deg, rgba(149,165,166,0.1), rgba(127,140,141,0.05));
+        }
+
+        .opportunity-card.locked::before {
+            content: '🔒';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 2rem;
+            opacity: 0.3;
+        }
+
+        .card-header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 15px;
+        }
+
+        .card-title-section h5 {
+            color: #38512F;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .status-badge {
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .status-active {
+            background-color: #00b894;
+            color: white;
+        }
+
+        .status-locked {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .badge-tag {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 5px;
+        }
+
+        .badge-urgent { background-color: #ff7675; color: white; }
+        .badge-ongoing { background-color: #74b9ff; color: white; }
+        .badge-flexible { background-color: #55efc4; color: white; }
+        .badge-weekend { background-color: #ffeaa7; color: #2d3436; }
+        .badge-weekday { background-color: #a29bfe; color: white; }
+        .badge-remote { background-color: #fd79a8; color: white; }
+
+        .card-info-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #3A3630;
+        }
+
+        .info-value {
+            color: #666;
+        }
+
+        .progress-section {
+            margin: 15px 0;
+        }
+
+        .progress {
+            height: 25px;
+            border-radius: 15px;
+            background-color: #e0e0e0;
+        }
+
+        .progress-bar {
+            background-color: #38512F;
+            border-radius: 15px;
+            font-weight: 600;
+        }
+
+        .progress-bar.full {
+            background-color: #00b894;
+        }
+
+        .expandable-section {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .expandable-section.expanded {
+            max-height: 1000px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px dashed #e0e0e0;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+
+        .btn-action {
+            padding: 8px 20px;
+            border-radius: 20px;
+            border: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-view {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-edit {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background-color: #e67e22;
+        }
+
+        .btn-delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background-color: #c0392b;
+        }
+
+        .expand-icon {
+            transition: transform 0.3s ease;
+            font-size: 1.5rem;
+            color: #38512F;
+            cursor: pointer;
+        }
+
+        .expanded .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        /* Volunteer List */
+        .volunteer-list {
+            margin-top: 15px;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .volunteer-list::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .volunteer-list::-webkit-scrollbar-thumb {
+            background-color: #38512F;
+            border-radius: 10px;
+        }
+
+        .volunteer-item {
+            background-color: #F0F8F0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 3px solid #38512F;
+        }
+
+        .volunteer-item h6 {
+            color: #38512F;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .empty-state-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.5;
+        }
+
+        footer {
+            background-color: #3A3630;
+            color: #FEF5E7;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        /* Edit Modal */
+        .modal-content {
+            border-radius: 20px;
+        }
+
+        .modal-header {
+            background-color: #38512F;
+            color: white;
+            border-radius: 20px 20px 0 0;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .card-info-row {
+                grid-template-columns: 1fr;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+            }
+
+            .btn-action {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back to Dashboard Header -->
+    <div class="back-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 style="color: white; margin: 0; font-weight: bold;">📚 Posted Opportunities</h4>
+                <a href="../Frontend/Components/Dashboards/NGO/NgoDashboard.html" class="back-link">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Manage Your Volunteer Opportunities</h1>
+            <p class="lead">Track applications, edit details, and engage with volunteers</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <section class="py-4">
+        <div class="container">
+
+            <!-- Filters Section -->
+            <div class="filters-section">
+                <div class="row align-items-center">
+                    <div class="col-md-4">
+                        <h5 style="margin: 0; color: #38512F;">Filter & Sort</h5>
+                    </div>
+                    <div class="col-md-8 text-md-end text-center mt-3 mt-md-0">
+                        <select class="filter-select" id="statusFilter">
+                            <option value="all">All Opportunities</option>
+                            <option value="active">Active</option>
+                            <option value="locked">Filled/Locked</option>
+                        </select>
+                        <select class="filter-select" id="sortFilter">
+                            <option value="recent">Most Recent</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="applications">Most Applications</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Opportunities Container -->
+            <div id="opportunitiesContainer">
+                <!-- Opportunity cards will be loaded here -->
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Edit Opportunity Modal -->
+    <div class="modal fade" id="editModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">✏️ Edit Opportunity</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editOpportunityForm">
+                        <input type="hidden" id="editOpportunityId">
+                        <div class="mb-3">
+                            <label class="form-label">Opportunity Title</label>
+                            <input type="text" class="form-control" id="editTitle" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Location</label>
+                                <input type="text" class="form-control" id="editLocation" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Duration</label>
+                                <input type="text" class="form-control" id="editDuration" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Skills Required</label>
+                            <input type="text" class="form-control" id="editSkills" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="editDescription" rows="4" required></textarea>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Volunteers Needed</label>
+                            <input type="number" class="form-control" id="editVolunteersNeeded" min="1" required>
+                        </div>
+                        <button type="submit" class="btn btn-success">💾 Save Changes</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-start text-center">
+                    <p>&copy; 2025 PawBridge. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <p>🤝 Thank you for engaging volunteers in animal welfare 🐾</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { getUser } from './Assets/js/auth.js';
+
+        const loggedUser = getUser('ngo/organisation');
+        console.log(loggedUser);
+        if (!loggedUser) {
+            alert('Please login first.');
+            window.location.href = 'landing.html#login';
+        }
+
+        // // Sample data for opportunities with volunteer applications
+        // const sampleOpportunities = [
+        //     {
+        //         id: 1,
+        //         title: 'Weekend Animal Shelter Assistant',
+        //         location: 'Pune, Maharashtra',
+        //         duration: '4-6 hours/weekend',
+        //         skills: 'Animal handling, Patience, Physical fitness',
+        //         description: 'Help with feeding, cleaning, and socializing rescued animals. Perfect for animal lovers.',
+        //         volunteers_needed: 5,
+        //         volunteersApplied: 5,
+        //         badges: ['weekend', 'ongoing'],
+        //         deadline: null,
+        //         created_at: '2025-02-15',
+        //         volunteers: [
+        //             { name: 'Rahul Sharma', email: 'rahul@example.com', phone: '9876543210', appliedOn: '2025-02-16' },
+        //             { name: 'Priya Patel', email: 'priya@example.com', phone: '9876543211', appliedOn: '2025-02-17' },
+        //             { name: 'Amit Kumar', email: 'amit@example.com', phone: '9876543212', appliedOn: '2025-02-18' },
+        //             { name: 'Sneha Reddy', email: 'sneha@example.com', phone: '9876543213', appliedOn: '2025-02-19' },
+        //             { name: 'Arjun Singh', email: 'arjun@example.com', phone: '9876543214', appliedOn: '2025-02-20' }
+        //         ]
+        //     },
+        //     {
+        //         id: 2,
+        //         title: 'Social Media & Documentation Volunteer',
+        //         location: 'Remote/Hybrid',
+        //         duration: '3-5 hours/week',
+        //         skills: 'Photography, Social Media, Content Writing',
+        //         description: 'Document rescue stories, manage social media posts, and help raise awareness.',
+        //         volunteers_needed: 3,
+        //         volunteersApplied: 2,
+        //         badges: ['flexible', 'ongoing', 'remote'],
+        //         deadline: '2025-03-31',
+        //         created_at: '2025-02-20',
+        //         volunteers: [
+        //             { name: 'Neha Gupta', email: 'neha@example.com', phone: '9876543215', appliedOn: '2025-02-21' },
+        //             { name: 'Karan Verma', email: 'karan@example.com', phone: '9876543216', appliedOn: '2025-02-22' }
+        //         ]
+        //     },
+        //     {
+        //         id: 3,
+        //         title: 'Emergency Rescue Support Team',
+        //         location: 'Pune & Surrounding Areas',
+        //         duration: 'On-call basis',
+        //         skills: 'First Aid, Driving License, Physical fitness',
+        //         description: 'Assist in emergency animal rescues and transport injured animals to clinics.',
+        //         volunteers_needed: 8,
+        //         volunteersApplied: 4,
+        //         badges: ['urgent', 'flexible'],
+        //         deadline: null,
+        //         created_at: '2025-02-10',
+        //         volunteers: [
+        //             { name: 'Vikram Joshi', email: 'vikram@example.com', phone: '9876543217', appliedOn: '2025-02-11' },
+        //             { name: 'Anjali Desai', email: 'anjali@example.com', phone: '9876543218', appliedOn: '2025-02-12' },
+        //             { name: 'Rohan Mehta', email: 'rohan@example.com', phone: '9876543219', appliedOn: '2025-02-13' },
+        //             { name: 'Pooja Nair', email: 'pooja@example.com', phone: '9876543220', appliedOn: '2025-02-14' }
+        //         ]
+        //     },
+        //     {
+        //         id: 4,
+        //         title: 'Community Education & Awareness',
+        //         location: 'Schools & Communities in Pune',
+        //         duration: '2-3 sessions/month',
+        //         skills: 'Public Speaking, Teaching, Presentation skills',
+        //         description: 'Conduct workshops in schools about responsible pet ownership.',
+        //         volunteers_needed: 4,
+        //         volunteersApplied: 4,
+        //         badges: ['weekend', 'ongoing'],
+        //         deadline: '2025-04-15',
+        //         created_at: '2025-01-25',
+        //         volunteers: [
+        //             { name: 'Simran Kaur', email: 'simran@example.com', phone: '9876543221', appliedOn: '2025-01-26' },
+        //             { name: 'Aditya Rao', email: 'aditya@example.com', phone: '9876543222', appliedOn: '2025-01-27' },
+        //             { name: 'Divya Shah', email: 'divya@example.com', phone: '9876543223', appliedOn: '2025-01-28' },
+        //             { name: 'Manish Pandey', email: 'manish@example.com', phone: '9876543224', appliedOn: '2025-01-29' }
+        //         ]
+        //     }
+        // ];
+
+        let allOpportunities = [];
+        let filteredOpportunities = [];
+
+        async function fetchNgoOpportunities() {
+            try {
+            
+                const res = await fetch(
+                `http://localhost:5001/opportunities/ngo/${loggedUser.um_id}`
+                );
+            
+                const data = await res.json();
+            
+                const opportunitiesWithVolunteers = await Promise.all(
+            
+                    data.map(async (opp) => {
+                    
+                        const appRes = await fetch(
+                        `http://localhost:5001/ngo/opportunity/${opp.vo_id}/applicants`
+                        );
+                    
+                        const appData = await appRes.json();
+                    
+                        const applicants = appData.applicants || [];
+                    
+                        return {
+                            ...opp,
+                            volunteers: applicants,
+                            volunteersApplied: applicants.length
+                        };
+                    
+                    })
+                );
+                
+        allOpportunities = opportunitiesWithVolunteers;
+        filteredOpportunities = [...allOpportunities];
+
+        loadOpportunities();
+
+    } catch (error) {
+
+        console.error("Error fetching opportunities:", error);
+
+    }
+}
+        // Load opportunities
+        function loadOpportunities() {
+            const container = document.getElementById('opportunitiesContainer');
+            
+            if (filteredOpportunities.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <h4>No Opportunities Posted Yet</h4>
+                        <p>Create your first volunteer opportunity to get started!</p>
+                        <button class="btn btn-success mt-3" onclick="window.location.href='ngo-create-opportunity.html'">
+                            ➕ Create Opportunity
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = filteredOpportunities.map(createOpportunityCard).join('');
+        }
+
+        // Create opportunity card
+        function createOpportunityCard(opp) {
+            const isLocked = opp.volunteersApplied >= opp.volunteers_needed;
+            const statusClass = isLocked ? 'status-locked' : 'status-active';
+            const statusText = isLocked ? 'Filled 🔒' : 'Active';
+            const progress = (opp.volunteersApplied / opp.volunteers_needed) * 100;
+            const progressClass = isLocked ? 'full' : '';
+
+            const badgesHtml = opp.badges.map(badge => 
+                `<span class="badge-tag badge-${badge}">${capitalizeFirst(badge)}</span>`
+            ).join('');
+
+            return `
+                <div class="opportunity-card ${isLocked ? 'locked' : ''}" data-id="${opp.vo_id}">
+                    <div class="card-header-section">
+                        <div class="card-title-section">
+                            <h5>${opp.title}</h5>
+                            <div>${badgesHtml}</div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <span class="status-badge ${statusClass}">${statusText}</span>
+                            <span class="expand-icon" onclick="toggleExpand(${opp.vo_id})">▼</span>
+                        </div>
+                    </div>
+
+                    <div class="card-info-row">
+                        <div class="info-item">
+                            <span class="info-label">📍 Location:</span>
+                            <span class="info-value">${opp.location}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">⏰ Duration:</span>
+                            <span class="info-value">${opp.duration}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">💼 Skills:</span>
+                            <span class="info-value">${opp.skills}</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">📅 Posted:</span>
+                            <span class="info-value">${formatDate(opp.created_at)}</span>
+                        </div>
+                    </div>
+
+                    <div class="progress-section">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span><strong>Volunteers:</strong> ${opp.volunteersApplied}/${opp.volunteers_needed}</span>
+                            <span>${Math.round(progress)}% Filled</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar ${progressClass}" style="width: ${progress}%">
+                                ${opp.volunteersApplied}/${opp.volunteers_needed}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="btn-action btn-view" onclick="toggleExpand(${opp.id})">
+                            👥 View Applications (${opp.volunteersApplied})
+                        </button>
+                        ${!isLocked ? `
+                            <button class="btn-action btn-edit" onclick="editOpportunity(${opp.id})">
+                                ✏️ Edit
+                            </button>
+                        ` : ''}
+                        <button class="btn-action btn-delete" onclick="deleteOpportunity(${opp.id})">
+                            🗑️ Delete
+                        </button>
+                    </div>
+
+                    <div class="expandable-section" id="expand-${opp.id}">
+                        <h6 style="color: #38512F; font-weight: bold;">📝 Description:</h6>
+                        <p>${opp.description}</p>
+
+                        ${opp.deadline ? `
+                            <p><strong>Deadline:</strong> ${formatDate(opp.deadline)}</p>
+                        ` : ''}
+
+                        <h6 style="color: #38512F; font-weight: bold; margin-top: 20px;">👥 Volunteer Applications:</h6>
+                        ${opp.volunteersApplied > 0 ? `
+                            <div class="volunteer-list">
+                                ${opp.volunteers.map(vol => `
+                                    <div class="volunteer-item">
+                                    <h6>${vol.applicant_name}</h6>
+
+                                    <p>📧 <strong>Email:</strong> ${vol.applicant_email}</p>
+                                    <p>📞 <strong>Phone:</strong> ${vol.applicant_mobile}</p>
+                                    <p>📍 <strong>Location:</strong> ${vol.applicant_location || "Not provided"}</p>
+
+                                    <p>🛠 <strong>Skills:</strong> ${vol.skills || "Not specified"}</p>
+
+                                    <p>⏳ <strong>Availability:</strong> ${vol.availability || "Not specified"}</p>
+
+                                    <p>💬 <strong>Motivation:</strong></p>
+                                    <p style="background:#f8f9fa;padding:8px;border-radius:6px;">
+                                        ${vol.motivation || "No message provided"}
+                                    </p>
+                                
+                                    <small>📅 Applied on: ${formatDate(vol.applied_at)}</small>
+                                
+                                    <div class="action-buttons mt-2">
+                                        <button class="btn btn-success btn-sm"
+                                        onclick="decideVolunteer(${vol.va_id}, true)">
+                                        Accept
+                                        </button>
+                                    
+                                        <button class="btn btn-danger btn-sm"
+                                        onclick="decideVolunteer(${vol.va_id}, false)">
+                                        Reject
+                                        </button>
+                                    </div>
+                                </div>
+                                `).join('')}
+                            </div>
+                        ` : `
+                            <p class="text-muted">No applications yet.</p>
+                        `}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle expand/collapse
+        window.toggleExpand = function(id) {
+            const expandSection = document.getElementById(`expand-${id}`);
+            const card = document.querySelector(`[data-id="${id}"]`);
+            
+            expandSection.classList.toggle('expanded');
+            card.classList.toggle('expanded');
+        };
+
+        // Edit opportunity
+        window.editOpportunity = function(id) {
+            const opp = allOpportunities.find(o => o.id === id);
+            if (!opp) return;
+
+            document.getElementById('editOpportunityId').value = id;
+            document.getElementById('editTitle').value = opp.title;
+            document.getElementById('editLocation').value = opp.location;
+            document.getElementById('editDuration').value = opp.duration;
+            document.getElementById('editSkills').value = opp.skills;
+            document.getElementById('editDescription').value = opp.description;
+            document.getElementById('editVolunteersNeeded').value = opp.volunteers_needed;
+
+            const modal = new bootstrap.Modal(document.getElementById('editModal'));
+            modal.show();
+        };
+
+        // Handle edit form submission
+        document.getElementById('editOpportunityForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const id = parseInt(document.getElementById('editOpportunityId').value);
+            const updatedData = {
+                title: document.getElementById('editTitle').value,
+                location: document.getElementById('editLocation').value,
+                duration: document.getElementById('editDuration').value,
+                skills: document.getElementById('editSkills').value,
+                description: document.getElementById('editDescription').value,
+                volunteers_needed: parseInt(document.getElementById('editVolunteersNeeded').value)
+            };
+
+            // TODO: Send to backend API
+            console.log('Updating opportunity:', id, updatedData);
+
+            // Update local data
+            const index = allOpportunities.findIndex(o => o.id === id);
+            if (index !== -1) {
+                allOpportunities[index] = { ...allOpportunities[index], ...updatedData };
+                filteredOpportunities = [...allOpportunities];
+                loadOpportunities();
+            }
+
+            alert('Opportunity updated successfully!');
+            bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
+        });
+
+        // Delete opportunity
+        window.deleteOpportunity = function(id) {
+            const opp = allOpportunities.find(o => o.id === id);
+            if (!confirm(`Are you sure you want to delete "${opp.title}"?`)) return;
+
+            // TODO: Send delete request to backend
+            console.log('Deleting opportunity:', id);
+
+            allOpportunities = allOpportunities.filter(o => o.id !== id);
+            filteredOpportunities = filteredOpportunities.filter(o => o.id !== id);
+            loadOpportunities();
+
+            alert('Opportunity deleted successfully!');
+        };
+
+        // Filter functionality
+        document.getElementById('statusFilter').addEventListener('change', filterOpportunities);
+        document.getElementById('sortFilter').addEventListener('change', sortOpportunities);
+
+        function filterOpportunities() {
+            const statusFilter = document.getElementById('statusFilter').value;
+            
+            if (statusFilter === 'all') {
+                filteredOpportunities = [...allOpportunities];
+            } else if (statusFilter === 'active') {
+                filteredOpportunities = allOpportunities.filter(o => o.volunteersApplied < o.volunteers_needed);
+            } else if (statusFilter === 'locked') {
+                filteredOpportunities = allOpportunities.filter(o => o.volunteersApplied >= o.volunteers_needed);
+            }
+            
+            sortOpportunities();
+        }
+
+        function sortOpportunities() {
+            const sortFilter = document.getElementById('sortFilter').value;
+            
+            if (sortFilter === 'recent') {
+                filteredOpportunities.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            } else if (sortFilter === 'oldest') {
+                filteredOpportunities.sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+            } else if (sortFilter === 'applications') {
+                filteredOpportunities.sort((a, b) => b.volunteersApplied - a.volunteersApplied);
+            }
+            
+            loadOpportunities();
+        }
+
+        // Helper functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+                window.decideVolunteer = async function(va_id, accept){
+                
+            try{
+            
+                const endpoint = accept
+                ? "http://localhost:5001/ngo/application/accept"
+                : "http://localhost:5001/ngo/application/reject";
+            
+                const res = await fetch(endpoint,{
+                    method:"POST",
+                    headers:{
+                        "Content-Type":"application/json"
+                    },
+                    body:JSON.stringify({va_id})
+                });
+            
+                const data = await res.json();
+            
+                alert(data.message);
+            
+                fetchNgoOpportunities();
+            
+            }catch(err){
+                console.error(err);
+            }
+        }
+        // Load opportunities on page load
+        loadOpportunities();
+        fetchNgoOpportunities();
+    </script>
+
+</body>
+</html>

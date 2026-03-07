@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adopt a Pet - PawBridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #FEF5E7;
+            color: #3A3630;
+        }
+
+        .navbar {
+            background-color: #38512F;
+        }
+
+        .navbar-brand, .nav-link {
+            color: #FEF5E7 !important;
+            font-weight: bold;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #DFF5E1, #F0DDBF);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #38512F;
+            font-weight: bold;
+            font-size: 3rem;
+        }
+
+        .filters-section {
+            background-color: #FFF9F2;
+            padding: 30px 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .adoption-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            background-color: white;
+        }
+
+        .adoption-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .adoption-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+        }
+
+        .placeholder-image {
+            width: 100%;
+            height: 250px;
+            background: linear-gradient(45deg, #DEA773, #F0DDBF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .card-title {
+            color: #38512F;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+
+        .pet-info {
+            margin-bottom: 15px;
+        }
+
+        .pet-info .label {
+            font-weight: 600;
+            color: #3A3630;
+        }
+
+        .pet-info .value {
+            color: #666;
+        }
+
+        .contact-section {
+            background-color: #F0F8F0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .contact-section h6 {
+            color: #38512F;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .btn-contact {
+            background-color: #DEA773;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            margin: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-contact:hover {
+            background-color: #C46F36;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 2px solid #DEA773;
+            color: #DEA773;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #DEA773;
+            color: white;
+        }
+
+        .age-badge {
+            background-color: #38512F;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .gender-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .gender-male {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .gender-female {
+            background-color: #e91e63;
+            color: white;
+        }
+
+        .gender-unknown {
+            background-color: #95a5a6;
+            color: white;
+        }
+
+        .search-bar {
+            border-radius: 25px;
+            border: 2px solid #DEA773;
+            padding: 10px 20px;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(222, 167, 115, 0.25);
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .no-results .icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        footer {
+            background-color: #3A3630;
+            color: #FEF5E7;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        .stats-bar {
+            background-color: #38512F;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: inline-block;
+            margin: 0 30px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #DEA773;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .adoption-card {
+                margin-bottom: 20px;
+            }
+            
+            .filters-section {
+                padding: 20px 15px;
+            }
+            
+            .stat-item {
+                display: block;
+                margin: 10px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!--navbar-->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand" href="landing.html">PawBridge</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#adopt">Adopt</a></li>
+                    <li class="nav-item"><a class="nav-link" href="donations.html">Donate</a></li>
+                    <li class="nav-item"><a class="nav-link" href="landing.html">Home</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!--hero section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Perfect Companion</h1>
+            <p class="lead">Browse loving animals from verified NGOs looking for their forever homes</p>
+        </div>
+    </section>
+
+    <!--stats bar-->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat-item">
+                <div class="stat-number" id="totalAnimals">0</div>
+                <div>Animals Available</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">156</div>
+                <div>Successfully Adopted</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">45</div>
+                <div>Partner NGOs</div>
+            </div>
+        </div>
+    </section>
+
+    <!--filters section-->
+    <section class="py-4">
+        <div class="container">
+            <div class="filters-section">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control search-bar" id="searchInput" placeholder="Search by name, breed, or description...">
+                    </div>
+                    <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
+                        <button class="filter-btn active" data-filter="all">All Animals</button>
+                        <button class="filter-btn" data-filter="cat">Cats</button>
+                        <button class="filter-btn" data-filter="dog">Dogs</button>
+                        <button class="filter-btn" data-filter="others">Others</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--adoption list -->
+    <section id="adopt" class="py-4">
+        <div class="container">
+            <div id="adoptionContainer">
+                <div class="loading-spinner">
+                    <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="mt-3">
+                        <h5>Loading adorable pets...</h5>
+                        <p class="text-muted">Finding the perfect companions for you</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!--footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-start text-center">
+                    <p>&copy; 2025 PawBridge. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <p>🐾 Every adoption saves two lives - one you rescue and one you make room for 🐾</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        let allPosts = [];
+        let filteredPosts = [];
+        let currentFilter = 'all';
+
+        //load adoption posts on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAdoptionPosts();
+            setupEventListeners();
+        });
+
+        //setup event listeners
+        function setupEventListeners() {
+            //filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    filterPosts();
+                });
+            });
+
+            //search input
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(filterPosts, 300));
+        }
+
+        //load adoption posts from backend
+        async function loadAdoptionPosts() {
+            const container = document.getElementById('adoptionContainer');
+            
+            try {
+                const response = await fetch('http://localhost:5001/adoption/posts');
+                const data = await response.json();
+                
+                if (data.success && data.posts.length > 0) {
+                    allPosts = data.posts;
+                    filteredPosts = [...allPosts];
+                    document.getElementById('totalAnimals').textContent = allPosts.length;
+                    renderPosts();
+                } else {
+                    showNoResults('No animals available for adoption at the moment.');
+                }
+            } catch (error) {
+                console.error('Error loading adoption posts:', error);
+                showErrorMessage();
+            }
+        }
+
+        //filter posts based on search and category
+        function filterPosts() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredPosts = allPosts.filter(post => {
+                const matchesSearch = !searchTerm || 
+                    post.animal_name?.toLowerCase().includes(searchTerm) ||
+                    post.breed?.toLowerCase().includes(searchTerm) ||
+                    post.description?.toLowerCase().includes(searchTerm) ||
+                    post.atm_name.toLowerCase().includes(searchTerm);
+                
+                const matchesFilter = currentFilter === 'all' || 
+                    (currentFilter === 'others' && !['cat', 'dog'].includes(post.atm_name)) ||
+                    post.atm_name === currentFilter;
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            renderPosts();
+        }
+
+        //render posts to the page
+        function renderPosts() {
+            const container = document.getElementById('adoptionContainer');
+            
+            if (filteredPosts.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="row">
+                    ${filteredPosts.map(createPostCard).join('')}
+                </div>
+            `;
+        }
+
+        //create individual post card
+        function createPostCard(post) {
+            const age = calculateAge(post.age_months);
+            const genderClass = getGenderBadgeClass(post.gender);
+            
+            return `
+                <div class="col-lg-4 col-md-6">
+                    <div class="adoption-card">
+                        ${post.image_url ? 
+                            `<img src="http://localhost:5001/uploads/adoptions/${post.image_url}" alt="${post.animal_name}" class="adoption-image">` :
+                            `<div class="placeholder-image">
+                                ${getAnimalIcon(post.atm_name)}
+                            </div>`
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                ${post.animal_name || 'Unnamed'}
+                                <div class="float-end">
+                                    <span class="gender-badge ${genderClass}">${post.gender || 'Unknown'}</span>
+                                </div>
+                            </h5>
+                            
+                            <div class="pet-info">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <span class="label">Type:</span>
+                                        <div class="value">${capitalizeFirst(post.atm_name)}</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <span class="label">Age:</span>
+                                        <div class="value">
+                                            <span class="age-badge">${age}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="pet-info">
+                                <span class="label">Breed:</span>
+                                <div class="value">${post.breed || 'Mixed Breed'}</div>
+                            </div>
+                            
+                            <div class="pet-info">
+                                <span class="label">Description:</span>
+                                <div class="value">${truncateText(post.description || 'No description available', 100)}</div>
+                            </div>
+                            
+                            <div class="contact-section">
+                                <h6>Contact NGO</h6>
+                                <div class="mb-2">
+                                    <strong>${post.ngo_name}</strong>
+                                </div>
+                                <div class="d-flex flex-wrap gap-2">
+                                    ${post.um_contact ? 
+                                        `<a href="tel:${post.um_contact}" class="btn-contact">📞 ${post.um_contact}</a>` : 
+                                        ''
+                                    }
+                                    <a href="mailto:${post.um_email}?subject=Adoption Inquiry for ${post.animal_name || 'Animal'}&body=Hi, I'm interested in adopting ${post.animal_name || 'this animal'}. Please let me know the process." class="btn-contact">✉️ Email</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        //helper functions
+        function calculateAge(ageInMonths) {
+            if (!ageInMonths) return 'Unknown';
+            
+            if (ageInMonths < 12) {
+                return `${ageInMonths} months`;
+            } else {
+                const years = Math.floor(ageInMonths / 12);
+                const months = ageInMonths % 12;
+                return months > 0 ? `${years}y ${months}m` : `${years} years`;
+            }
+        }
+
+        function getGenderBadgeClass(gender) {
+            if (!gender) return 'gender-unknown';
+            switch (gender.toLowerCase()) {
+                case 'male': return 'gender-male';
+                case 'female': return 'gender-female';
+                default: return 'gender-unknown';
+            }
+        }
+
+        function getAnimalIcon(animalType) {
+            const icons = {
+                'cat': '🐱',
+                'dog': '🐶',
+                'cow': '🐄',
+                'goat': '🐐',
+                'sheep': '🐑',
+                'snake': '🐍'
+            };
+            return icons[animalType] || '🐾';
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function truncateText(text, maxLength) {
+            if (text.length <= maxLength) return text;
+            return text.substring(0, maxLength) + '...';
+        }
+
+        function showNoResults(message = 'No animals match your search criteria.') {
+            document.getElementById('adoptionContainer').innerHTML = `
+                <div class="no-results">
+                    <div class="icon">🐾</div>
+                    <h4>No Results Found</h4>
+                    <p>${message}</p>
+                    <button class="btn btn-outline-primary" onclick="resetFilters()">Show All Animals</button>
+                </div>
+            `;
+        }
+
+        function showErrorMessage() {
+            document.getElementById('adoptionContainer').innerHTML = `
+                <div class="no-results">
+                    <div class="icon">❌</div>
+                    <h4>Connection Error</h4>
+                    <p>Unable to load adoption listings. Please check your internet connection.</p>
+                    <button class="btn btn-primary" onclick="loadAdoptionPosts()">Try Again</button>
+                </div>
+            `;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+            currentFilter = 'all';
+            filteredPosts = [...allPosts];
+            renderPosts();
+        }
+
+        //debounce function for search input
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        //smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

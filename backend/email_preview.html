@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PawBridge Email Preview</title>
+</head>
+<body>
+  <!-- Paste your email HTML here -->
+   <div style="font-family: 'Arial', sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <div style="background-color: #38512F; padding: 30px; text-align: center;">
+          <h1 style="color: #fff; margin: 0;">Welcome to PawBridge! 🐶🐱</h1>
+        </div>
+        <div style="padding: 30px; background-color: #fff;">
+          <p style="font-size: 16px; color: #333;">Hi <b>${username}</b>,</p>
+          <p style="font-size: 16px; color: #333;">Your account has been successfully created on PawBridge. Use the credentials below to log in and start exploring:</p>
+          
+          <table style="width: 100%; margin: 20px 0; border-collapse: collapse;">
+            <tr>
+              <td style="padding: 10px; background-color: #f0f0f0; border-radius: 5px;"><b>Email:</b></td>
+              <td style="padding: 10px; background-color: #f0f0f0; border-radius: 5px;">${to}</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px; background-color: #f0f0f0; border-radius: 5px;"><b>Password:</b></td>
+              <td style="padding: 10px; background-color: #f0f0f0; border-radius: 5px;">${password}</td>
+            </tr>
+          </table>
+          
+          <p style="font-size: 16px; color: #333;">We recommend changing your password after logging in for the first time.</p>
+
+          <a href="http://localhost:5500/login" style="display: inline-block; padding: 12px 25px; margin-top: 20px; background-color: #38512F; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">Login Now</a>
+          
+          <p style="margin-top: 30px; font-size: 14px; color: #999;">If you did not register for PawBridge, please ignore this email.</p>
+        </div>
+        <div style="background-color: #38512F; text-align: center; padding: 20px; color: #fff; font-size: 14px;">
+          &copy; ${new Date().getFullYear()} PawBridge. All rights reserved.
+        </div>
+      </div>
+</body>
+</html>

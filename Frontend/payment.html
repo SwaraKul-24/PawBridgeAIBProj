@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PawBridge — Donate</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green:        #38512F;
+      --beige:        #FEF5E7;
+      --brown:        #3A3630;
+      --light-green:  #DFF5E1;
+      --dark-beige:   #F0DDBF;
+      --orange:       #DEA773;
+      --shadow:       0 8px 40px rgba(58,54,48,0.13);
+      --radius:       18px;
+    }
+
+    html, body {
+      min-height: 100%;
+      background: var(--beige);
+      font-family: 'DM Sans', sans-serif;
+      color: var(--brown);
+    }
+
+    /* subtle dot grid background */
+    body {
+      background-image: radial-gradient(circle, #d4c9b5 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-color: var(--beige);
+    }
+
+    /* ─── HEADER ─────────────────────────────────────── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: #fffdf8;
+      box-shadow: 0 2px 18px rgba(58,54,48,0.09);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 64px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-paw {
+      font-size: 1.3rem;
+    }
+
+    .back-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--light-green);
+      color: var(--green);
+      border: 1.5px solid #b8dcbb;
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+    .back-btn:hover {
+      background: #c6edc9;
+      box-shadow: 0 2px 10px rgba(56,81,47,0.15);
+      transform: translateX(-2px);
+    }
+
+    /* ─── PAGE BODY ──────────────────────────────────── */
+    main {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 96px 20px 48px;
+    }
+
+    /* ─── CARD ───────────────────────────────────────── */
+    .card {
+      background: #fffdf8;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow), 0 2px 0 0 var(--dark-beige);
+      width: 100%;
+      max-width: 460px;
+      padding: 40px 40px 36px;
+      border: 1px solid #ecdcbf;
+      animation: cardIn 0.55s cubic-bezier(.22,.68,0,1.2) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(28px) scale(0.97); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    .card-header {
+      margin-bottom: 28px;
+    }
+    .card-eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1.4px;
+      text-transform: uppercase;
+      color: var(--orange);
+      margin-bottom: 6px;
+    }
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--green);
+      line-height: 1.2;
+    }
+
+    /* ─── DIVIDER ────────────────────────────────────── */
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, var(--dark-beige), transparent);
+      margin: 22px 0;
+    }
+
+    /* ─── SECTION LABELS ─────────────────────────────── */
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: #a09078;
+      margin-bottom: 12px;
+    }
+
+    /* ─── FIELD GROUP ────────────────────────────────── */
+    .field-group {
+      display: grid;
+      gap: 14px;
+      margin-bottom: 6px;
+    }
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #6b5e4e;
+      letter-spacing: 0.2px;
+    }
+    input {
+      background: var(--beige);
+      border: 1.5px solid #ddd0bc;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.93rem;
+      color: var(--brown);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+      width: 100%;
+    }
+    input::placeholder { color: #c4b49e; }
+    input:focus {
+      border-color: var(--orange);
+      background: #fffdf8;
+      box-shadow: 0 0 0 3px rgba(222,167,115,0.18);
+    }
+    input.error {
+      border-color: #c0392b;
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.10);
+    }
+
+    .card-icon-wrap {
+      position: relative;
+    }
+    .card-icon-wrap input { padding-right: 44px; }
+    .card-type-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.1rem;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .demo-note {
+      font-size: 0.73rem;
+      color: #b0a090;
+      margin-top: 3px;
+      font-style: italic;
+    }
+
+    /* ─── AMOUNT BADGE ───────────────────────────────── */
+    .amount-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--light-green);
+      border: 1.5px solid #b8dcbb;
+      border-radius: 12px;
+      padding: 14px 18px;
+      margin: 22px 0 20px;
+    }
+    .amount-label {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--green);
+    }
+    .amount-value {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.5px;
+    }
+
+    /* ─── PAY BUTTON ─────────────────────────────────── */
+    .pay-btn {
+      width: 100%;
+      padding: 15px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--green) 0%, #4e7043 100%);
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+      box-shadow: 0 4px 18px rgba(56,81,47,0.28);
+      position: relative;
+      overflow: hidden;
+    }
+    .pay-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.07) 0%, transparent 100%);
+    }
+    .pay-btn:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(56,81,47,0.35);
+    }
+    .pay-btn:not(:disabled):active { transform: translateY(0); }
+    .pay-btn:disabled {
+      opacity: 0.72;
+      cursor: not-allowed;
+    }
+
+    .processing-dots span {
+      display: inline-block;
+      animation: dot 1.2s infinite;
+    }
+    .processing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .processing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes dot {
+      0%, 80%, 100% { opacity: 0.2; transform: translateY(0); }
+      40% { opacity: 1; transform: translateY(-3px); }
+    }
+
+    /* ─── SECURE BADGE ───────────────────────────────── */
+    .secure-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 14px;
+      font-size: 0.73rem;
+      color: #a09078;
+    }
+
+    /* ─── SUCCESS SCREEN ─────────────────────────────── */
+    .success-screen {
+      display: none;
+      text-align: center;
+      padding: 10px 0 6px;
+      animation: cardIn 0.5s cubic-bezier(.22,.68,0,1.2) both;
+    }
+    .success-icon {
+      font-size: 3.5rem;
+      margin-bottom: 6px;
+      display: block;
+      animation: popIn 0.5s 0.1s cubic-bezier(.22,.68,0,1.2) both;
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.4); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .success-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--green);
+      margin-bottom: 6px;
+    }
+    .success-sub {
+      font-size: 0.88rem;
+      color: #7a6a58;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .receipt {
+      background: var(--beige);
+      border: 1px dashed #d4c0a3;
+      border-radius: 14px;
+      padding: 20px;
+      text-align: left;
+      margin-bottom: 22px;
+    }
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #e8d9c2;
+      font-size: 0.88rem;
+    }
+    .receipt-row:last-child { border-bottom: none; }
+    .receipt-key { color: #a09078; font-weight: 500; }
+    .receipt-val { color: var(--brown); font-weight: 600; font-size: 0.9rem; }
+    .receipt-val.txn { font-family: monospace; color: var(--green); font-size: 0.82rem; }
+
+    .done-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--light-green);
+      color: var(--green);
+      border: 1.5px solid #b8dcbb;
+      border-radius: 50px;
+      padding: 11px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+    .done-btn:hover { background: #c6edc9; box-shadow: 0 2px 10px rgba(56,81,47,0.15); }
+
+    /* ─── ERROR MSG ──────────────────────────────────── */
+    .err-msg {
+      font-size: 0.75rem;
+      color: #c0392b;
+      margin-top: 3px;
+      display: none;
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 500px) {
+      header { padding: 0 18px; }
+      .card  { padding: 28px 22px 26px; }
+      .field-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── HEADER ── -->
+<header>
+  <div class="logo">
+    <span class="logo-paw">🐾</span> PawBridge
+  </div>
+  <a class="back-btn" href="Components/Dashboards/User/UserDashboard.html">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    Back
+  </a>
+</header>
+
+<!-- ── MAIN ── -->
+<main>
+  <div class="card" id="mainCard">
+
+    <!-- ── PAYMENT FORM ── -->
+    <div id="formView">
+      <div class="card-header">
+        <div class="card-eyebrow">Secure Donation</div>
+        <div class="card-title">Donate to PawBridge</div>
+      </div>
+
+      <!-- Donor Info -->
+      <div class="section-label">Donor Information</div>
+      <div class="field-group">
+        <div class="field">
+          <label for="donorName">Full Name</label>
+          <input type="text" id="donorName" placeholder="Aarav Sharma" autocomplete="name"/>
+          <span class="err-msg" id="err-donorName">Please enter your name.</span>
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="aarav@example.com" autocomplete="email"/>
+          <span class="err-msg" id="err-email">Please enter a valid email.</span>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Card Info -->
+      <div class="section-label">Card Details</div>
+      <div class="field-group">
+        <div class="field">
+          <label for="cardHolder">Cardholder Name</label>
+          <input type="text" id="cardHolder" placeholder="Name on card" autocomplete="cc-name"/>
+          <span class="err-msg" id="err-cardHolder">Please enter the cardholder name.</span>
+        </div>
+        <div class="field">
+          <label for="cardNumber">Card Number</label>
+          <div class="card-icon-wrap" style="position:relative;">
+            <input type="text" id="cardNumber" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number" inputmode="numeric"/>
+            <span class="card-type-icon" id="cardTypeIcon">💳</span>
+          </div>
+          <span class="err-msg" id="err-cardNumber">Please enter a valid 16-digit card number.</span>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="expiry">Expiry Date</label>
+            <input type="text" id="expiry" placeholder="MM/YY" maxlength="5" autocomplete="cc-exp" inputmode="numeric"/>
+            <span class="err-msg" id="err-expiry">Invalid expiry date.</span>
+          </div>
+          <div class="field">
+            <label for="cvv">CVV</label>
+            <input type="password" id="cvv" placeholder="•••" maxlength="4" autocomplete="cc-csc" inputmode="numeric"/>
+            <span class="err-msg" id="err-cvv">CVV must be 3–4 digits.</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="demo-note">🔒 This is a demo payment form. Any values will work.</p>
+
+      <!-- Amount Badge -->
+      <div class="amount-badge">
+        <span class="amount-label">Donation Amount</span>
+        <span class="amount-value" id="amountDisplay">₹100</span>
+      </div>
+      
+      <div class="field" style="margin-bottom:18px;">
+        <label for="customAmount">Enter Custom Amount</label>
+        <input 
+            type="number"
+            id="customAmount"
+            placeholder="Enter amount (₹)"
+            min="1"
+            oninput="updateAmount()"
+        />
+      </div>
+
+      <!-- Pay Button -->
+      <button class="pay-btn" id="payBtn" onclick="handlePay()">
+        Pay <span id="btnAmount">₹100</span>
+      </button>
+
+      <div class="secure-row">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        256-bit SSL encrypted &nbsp;·&nbsp; PCI DSS compliant
+      </div>
+    </div>
+
+    <!-- ── SUCCESS SCREEN ── -->
+    <div class="success-screen" id="successView">
+      <span class="success-icon">🎉</span>
+      <div class="success-title">Payment Successful!</div>
+      <p class="success-sub">Thank you for supporting animal rescue through PawBridge.</p>
+
+      <div class="receipt">
+        <div class="receipt-row">
+          <span class="receipt-key">Transaction ID</span>
+          <span class="receipt-val txn" id="txnId">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Amount Paid</span>
+          <span class="receipt-val" id="successAmount">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Donor</span>
+          <span class="receipt-val" id="successName">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Email</span>
+          <span class="receipt-val" id="successEmail">—</span>
+        </div>
+        <div class="receipt-row">
+          <span class="receipt-key">Status</span>
+          <span class="receipt-val" style="color:#38512F;">✅ Success</span>
+        </div>
+      </div>
+
+      <a class="done-btn" href="./Components/Dashboards/User/UserDashboard.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Return to Dashboard
+      </a>
+    </div>
+
+  </div>
+</main>
+
+<script>
+  // ── Read amount from URL ──────────────────────────────
+  const user = JSON.parse(sessionStorage.getItem("user"));
+
+if(!user){
+  alert("Please login first");
+  window.location.href = "landing.html";
+}
+
+  const params = new URLSearchParams(window.location.search);
+  const userId = params.get("user");
+
+  const rawAmt = params.get('amount');
+  const amount = (rawAmt && !isNaN(rawAmt) && Number(rawAmt) > 0)
+    ? Number(rawAmt)
+    : 100;
+
+  document.getElementById('amountDisplay').textContent = '₹' + amount;
+  document.getElementById('btnAmount').textContent      = '₹' + amount;
+
+  // ── Card number auto-spacing ──────────────────────────
+  const cardNumberInput = document.getElementById('cardNumber');
+  const cardTypeIcon    = document.getElementById('cardTypeIcon');
+
+  cardNumberInput.addEventListener('input', function (e) {
+    let val = this.value.replace(/\D/g, '').substring(0, 16);
+    this.value = val.replace(/(.{4})/g, '$1 ').trim();
+
+    // naive card type detection
+    const first = val[0];
+    if (first === '4')       cardTypeIcon.textContent = '💳'; // Visa
+    else if (first === '5')  cardTypeIcon.textContent = '🟠'; // MC
+    else if (first === '3')  cardTypeIcon.textContent = '🔵'; // Amex
+    else if (first === '6')  cardTypeIcon.textContent = '🟢'; // RuPay/Discover
+    else                     cardTypeIcon.textContent = '💳';
+  });
+
+  // ── Expiry auto-format ────────────────────────────────
+  document.getElementById('expiry').addEventListener('input', function (e) {
+    let val = this.value.replace(/\D/g, '').substring(0, 4);
+    if (val.length >= 3) {
+      val = val.substring(0, 2) + '/' + val.substring(2);
+    }
+    this.value = val;
+  });
+
+  // ── Validation helpers ────────────────────────────────
+  function showErr(id, show) {
+    const el = document.getElementById('err-' + id);
+    const inp = document.getElementById(id);
+    el.style.display = show ? 'block' : 'none';
+    inp.classList.toggle('error', show);
+    return show;
+  }
+
+  function validate() {
+    let hasErr = false;
+
+    const name  = document.getElementById('donorName').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const ch    = document.getElementById('cardHolder').value.trim();
+    const cn    = document.getElementById('cardNumber').value.replace(/\s/g,'');
+    const exp   = document.getElementById('expiry').value.trim();
+    const cvv   = document.getElementById('cvv').value.trim();
+
+    if (!name)  hasErr |= showErr('donorName', true);
+    else              showErr('donorName', false);
+
+    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    if (!emailOk) hasErr |= showErr('email', true);
+    else               showErr('email', false);
+
+    if (!ch) hasErr |= showErr('cardHolder', true);
+    else          showErr('cardHolder', false);
+
+    if (cn.length !== 16) hasErr |= showErr('cardNumber', true);
+    else                       showErr('cardNumber', false);
+
+    const expOk = /^(0[1-9]|1[0-2])\/\d{2}$/.test(exp);
+    if (!expOk) hasErr |= showErr('expiry', true);
+    else             showErr('expiry', false);
+
+    if (cvv.length < 3) hasErr |= showErr('cvv', true);
+    else                     showErr('cvv', false);
+
+    return !hasErr;
+  }
+
+  // ── Handle Pay ────────────────────────────────────────
+  function updateAmount() {
+  const custom = document.getElementById("customAmount").value;
+
+  if(custom && custom > 0){
+    document.getElementById("amountDisplay").textContent = "₹" + custom;
+    document.getElementById("btnAmount").textContent = "₹" + custom;
+  }
+}
+
+async function handlePay() {
+
+  if (!validate()) return;
+
+  const btn = document.getElementById('payBtn');
+  btn.disabled = true;
+  btn.innerHTML = `Processing<span class="processing-dots"><span>.</span><span>.</span><span>.</span></span>`;
+
+  const donorName = document.getElementById('donorName').value;
+  const email = document.getElementById('email').value;
+
+  const customAmount = document.getElementById("customAmount").value;
+  const finalAmount = customAmount && customAmount > 0 ? customAmount : amount;
+
+  const txnId = "PB" + Date.now();
+
+  try{
+
+    const response = await fetch("http://localhost:5001/api/donation/pay",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body: JSON.stringify({
+        user_id:user.um_id,
+        donor_name:donorName,
+        email:email,
+        amount:finalAmount,
+        transaction_id:txnId
+      })
+    });
+
+    const data = await response.json();
+
+    if(data.success){
+
+      document.getElementById("formView").style.display="none";
+      document.getElementById("successView").style.display="block";
+
+      document.getElementById("txnId").textContent = txnId;
+      document.getElementById("successAmount").textContent = "₹"+finalAmount;
+      document.getElementById("successName").textContent = donorName;
+      document.getElementById("successEmail").textContent = email;
+
+    }
+
+  }catch(err){
+    alert("Payment failed");
+  }
+
+}
+ </script>
+</body>
+</html>

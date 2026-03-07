@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PawBridge - NGO Registration</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #FEF5E7;
+      color: #3A3630;
+      font-family: 'Segoe UI', sans-serif;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      background-color: #38512F;
+    }
+
+    .navbar-brand {
+      color: #FEF5E7 !important;
+      font-weight: bold;
+    }
+
+    .nav-link {
+      color: #FEF5E7 !important;
+    }
+
+    .verification-section {
+      background: linear-gradient(135deg, #DFF5E1, #F0DDBF);
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .verification-section h1 {
+      color: #38512F;
+      font-weight: bold;
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .verification-section p {
+      font-size: 1.2rem;
+      color: #3A3630;
+      margin-bottom: 30px;
+    }
+
+    .process-steps {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 40px;
+    }
+
+    .step-item {
+      text-align: center;
+      max-width: 200px;
+    }
+
+    .step-number {
+      width: 60px;
+      height: 60px;
+      background-color: #38512F;
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin: 0 auto 15px;
+    }
+
+    .container {
+      max-width: 900px;
+      margin-top: 40px;
+      margin-bottom: 60px;
+    }
+
+    .form-card {
+      background-color: white;
+      border-radius: 20px;
+      padding: 50px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-card h3 {
+      color: #38512F;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 40px;
+      font-size: 2rem;
+    }
+
+    .form-floating {
+      margin-bottom: 25px;
+    }
+
+    .form-floating > .form-control,
+    .form-floating > .form-select {
+      border: 2px solid #e9ecef;
+      border-radius: 12px;
+      padding: 1.2rem 0.75rem;
+      font-size: 1rem;
+    }
+
+    .form-floating > .form-control:focus,
+    .form-floating > .form-select:focus {
+      border-color: #38512F;
+      box-shadow: 0 0 0 0.2rem rgba(56, 81, 47, 0.25);
+    }
+
+    .form-floating > label {
+      color: #666;
+      padding: 1.2rem 0.75rem;
+    }
+
+    .btn-submit {
+      background: linear-gradient(135deg, #38512F, #4a6b3a);
+      color: white;
+      font-weight: bold;
+      border-radius: 12px;
+      padding: 15px 40px;
+      border: none;
+      font-size: 1.1rem;
+      margin-right: 15px;
+    }
+
+    .btn-submit:hover {
+      background: linear-gradient(135deg, #283f20, #3a5230);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-cancel {
+      background-color: #f1d2b4;
+      color: #3A3630;
+      font-weight: 500;
+      border-radius: 12px;
+      padding: 15px 40px;
+      border: none;
+      font-size: 1.1rem;
+    }
+
+    .btn-cancel:hover {
+      background-color: #e6c5a3;
+      color: #3A3630;
+    }
+
+    .form-label.required::after {
+      content: " *";
+      color: #dc3545;
+      font-weight: bold;
+    }
+
+    .error-message {
+      font-size: 0.875rem;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .error-message.error {
+      color: #dc3545;
+    }
+
+    .error-message.info {
+      color: #6c757d;
+    }
+
+    .error-message.success {
+      color: #198754;
+    }
+
+    .is-invalid {
+      border-color: #dc3545 !important;
+    }
+
+    .is-valid {
+      border-color: #198754 !important;
+    }
+
+    .file-upload-area {
+      border: 2px dashed #38512F;
+      border-radius: 12px;
+      padding: 30px;
+      text-align: center;
+      background-color: #f8f9fa;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+    }
+
+    .file-upload-area:hover {
+      background-color: #DFF5E1;
+      border-color: #283f20;
+    }
+
+    .file-upload-area.dragover {
+      background-color: #DFF5E1;
+      border-color: #38512F;
+    }
+
+    .upload-icon {
+      font-size: 3rem;
+      color: #38512F;
+      margin-bottom: 15px;
+    }
+
+    .accepted-formats {
+      background-color: #DFF5E1;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+
+    .security-note {
+      background-color: #FFF5E1;
+      border-left: 4px solid #DEA773;
+      padding: 20px;
+      margin: 30px 0;
+      border-radius: 0 10px 10px 0;
+    }
+
+    .benefits-section {
+      background-color: #F0F8F0;
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 40px;
+    }
+
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      margin: 15px 0;
+    }
+
+    .benefit-icon {
+      width: 40px;
+      height: 40px;
+      background-color: #38512F;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 15px;
+      color: white;
+      font-size: 1.1rem;
+    }
+
+    footer {
+      background-color: #3A3630;
+      color: #FEF5E7;
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(58, 54, 48, 0.8);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+
+    .modal-box {
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      color: #3A3630;
+    }
+
+    .modal-title {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      color: #38512F;
+      font-weight: bold;
+    }
+
+    .modal-text {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .btn-ok {
+      background: linear-gradient(135deg, #38512F, #4a6b3a);
+      color: white;
+      border: none;
+      padding: 15px 40px;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .btn-ok:hover {
+      background: linear-gradient(135deg, #283f20, #3a5230);
+      color: white;
+    }
+
+    @media (max-width: 768px) {
+      .verification-section h1 {
+        font-size: 2rem;
+      }
+      
+      .process-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+      
+      .form-card {
+        padding: 30px 20px;
+      }
+      
+      .btn-submit, .btn-cancel {
+        width: 100%;
+        margin: 5px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="../../../landing.html">PawBridge</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="../../../landing.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="../../../landing.html#login">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!--NGO verification header-->
+  <section class="verification-section">
+    <div class="container">
+      <h1>NGO Partnership Program</h1>
+      <p>Join our network of verified organizations saving lives across India</p>
+      
+      <div class="process-steps">
+        <div class="step-item">
+          <div class="step-number">1</div>
+          <h6>Submit Application</h6>
+          <p>Fill verification form with official documents</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">2</div>
+          <h6>Admin Review</h6>
+          <p>Our team verifies your organization</p>
+        </div>
+        <div class="step-item">
+          <div class="step-number">3</div>
+          <h6>Start Saving Lives</h6>
+          <p>Receive emergency alerts and manage adoptions</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- form section -->
+  <section class="py-5">
+    <div class="container">
+      <div class="form-card">
+        <h3>NGO Verification Application</h3>
+        
+        <form id="ngoVerificationForm" enctype="multipart/form-data" novalidate>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="ngoName" required>
+                <label for="ngoName" class="required">Organization Name</label>
+                <div class="error-message error" id="ngoNameError">Please enter your organization name.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="ngoRegNumber" required>
+                <label for="ngoRegNumber" class="required">Registration Number</label>
+                <div class="error-message error" id="regNumberError">Please enter a valid registration number.</div>
+                <div class="error-message info">Government issued registration number</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="text" class="form-control" id="founderName" required>
+                <label for="founderName" class="required">Founder/Director Name</label>
+                <div class="error-message error" id="founderNameError">Please enter a valid name.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="email" class="form-control" id="email" required>
+                <label for="email" class="required">Official Email</label>
+                <div class="error-message error" id="emailError">Please enter a valid email address.</div>
+                <div class="error-message success" id="emailSuccess">Email format is valid.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-floating">
+                <input type="tel" class="form-control" id="contact" required>
+                <label for="contact" class="required">Contact Number</label>
+                <div class="error-message error" id="contactError">Please enter a valid 10-digit number.</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-floating">
+                <select class="form-select" id="organizationType" required>
+                  <option value="">Select type</option>
+                  <option value="NGO">NGO</option>
+                  <option value="Animal Shelter">Animal Shelter</option>
+                  <option value="Veterinary Clinic">Veterinary Clinic</option>
+                  <option value="Rescue Organization">Rescue Organization</option>
+                  <option value="Other">Other</option>
+                </select>
+                <label for="organizationType" class="required">Organization Type</label>
+                <div class="error-message error" id="typeError">Please select organization type.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-floating">
+            <textarea class="form-control" id="address" rows="3" required></textarea>
+            <label for="address" class="required">Complete Address</label>
+            <div class="error-message error" id="addressError">Please enter the complete address.</div>
+            <div class="error-message info">Include city, state, and PIN code</div>
+          </div>
+
+          <div class="form-floating">
+            <textarea class="form-control" id="description" rows="4"></textarea>
+            <label for="description">Brief Description</label>
+            <div class="error-message info">Tell us about your organization's work and experience (optional)</div>
+          </div>
+
+          <!--document upload section -->
+          <div class="mb-4">
+            <label class="form-label required">Verification Document</label>
+            <div class="file-upload-area" id="uploadArea">
+              <div class="upload-icon">📄</div>
+              <h6>Upload Verification Document</h6>
+              <p class="mb-2">Drag and drop your document here, or <strong>click to browse</strong></p>
+              <input type="file" class="d-none" id="docUpload" required accept=".pdf,.doc,.docx,.xlsx,.xls,.jpg,.jpeg,.png">
+            </div>
+            <div class="error-message error" id="docError">Please upload a valid verification document.</div>
+            
+            <div class="accepted-formats">
+              <h6>Accepted Documents:</h6>
+              <div class="row">
+                <div class="col-md-6">
+                  <ul class="mb-0">
+                    <li>Government Registration Certificate</li>
+                    <li>12A/80G Tax Exemption Certificate</li>
+                    <li>FCRA Registration (if applicable)</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul class="mb-0">
+                    <li>Trust/Society Registration</li>
+                    <li>Section 8 Company Certificate</li>
+                    <li>Other official documents</li>
+                  </ul>
+                </div>
+              </div>
+              <small class="text-muted d-block mt-2">Formats: PDF, DOC, DOCX, XLSX, JPG, PNG (Max 5MB)</small>
+            </div>
+          </div>
+
+          <div class="security-note">
+            <h6>Security & Privacy</h6>
+            <p class="mb-0">All submitted documents are encrypted and stored securely. Information is used solely for verification purposes and will not be shared with third parties.</p>
+          </div>
+
+          <div class="text-center">
+            <button type="submit" class="btn-submit">Submit Application</button>
+            <button type="button" class="btn-cancel" onclick="window.location.href='../../../landing.html'">Cancel</button>
+          </div>
+        </form>
+
+        <div class="benefits-section">
+          <h5 class="text-center mb-4">What You Get as PawBridge Partner:</h5>
+          <div class="benefit-item">
+            <div class="benefit-icon">🚨</div>
+            <div>
+              <strong>Emergency Alerts:</strong> Receive instant notifications for animal emergencies in your area
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">📱</div>
+            <div>
+              <strong>Digital Platform:</strong> Manage rescue cases, adoption posts, and donations through our dashboard
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">💰</div>
+            <div>
+              <strong>Donation Channel:</strong> Receive transparent donations from our user community
+            </div>
+          </div>
+          <div class="benefit-item">
+            <div class="benefit-icon">🌐</div>
+            <div>
+              <strong>Greater Reach:</strong> Connect with more animal lovers and volunteers in your region
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!--footer-->
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 PawBridge. Together, we're building a compassionate world for all animals.</p>
+    </div>
+  </footer>
+
+  <!--success modal -->
+  <div id="successModal" class="modal-overlay">
+    <div class="modal-box">
+      <h4 class="modal-title">Application Submitted Successfully!</h4>
+      <p class="modal-text">
+        Thank you for your interest in partnering with <strong>PawBridge</strong>. Your application has been received and is now under review.<br><br>
+        
+        <strong>What happens next:</strong><br>
+        1. Our admin team will verify your documentation<br>
+        2. We'll contact you within 3-5 business days<br>
+        3. Upon approval, login credentials will be sent to your official email<br>
+        4. You'll receive training materials to get started<br><br>
+        
+        <strong>Important:</strong> Please check your email regularly and ensure our domain is not blocked by spam filters.
+      </p>
+      <button class="btn-ok" onclick="redirectToLogin()">Understood</button>
+    </div>
+  </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      //only run after DOM ready
+      const uploadArea = document.getElementById('uploadArea');
+      const fileInput = document.getElementById('docUpload');
+      if (!uploadArea || !fileInput) {
+        console.error('Upload area or file input not found!');
+        return;
+      }
+
+      //file upload handling
+      uploadArea.addEventListener('click', () => fileInput.click());
+
+      uploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        uploadArea.classList.add('dragover');
+      });
+
+      uploadArea.addEventListener('dragleave', () => {
+        uploadArea.classList.remove('dragover');
+      });
+
+      uploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        uploadArea.classList.remove('dragover');
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+          //only try to set the file if the browser allows it
+          if ("files" in fileInput) {
+            fileInput.files = files;
+            updateFileDisplay(files[0]);
+          }
+        }
+      });
+
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+          updateFileDisplay(e.target.files[0]);
+        }
+      });
+
+      function updateFileDisplay(file) {
+        uploadArea.innerHTML = `
+          <div class="upload-icon">✅</div>
+          <h6>File Selected</h6>
+          <p><strong>${file.name}</strong></p>
+          <p class="text-muted">Size: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+          <small class="text-success">Click to change file</small>
+        `;
+      }
+
+      //real-time validation
+      function setupValidation() {
+        const fields = ['ngoName', 'ngoRegNumber', 'founderName', 'email', 'contact', 'organizationType', 'address'];
+        fields.forEach(fieldId => {
+          const field = document.getElementById(fieldId);
+          field.addEventListener('input', () => validateField(fieldId));
+          field.addEventListener('blur', () => validateField(fieldId));
+        });
+      }
+
+      function validateField(fieldName) {
+        const field = document.getElementById(fieldName);
+        const value = field.value.trim();
+        let isValid = false;
+        field.classList.remove('is-valid', 'is-invalid');
+        hideAllErrors(fieldName);
+        switch(fieldName) {
+          case 'ngoName':
+          case 'founderName':
+            const nameRegex = /^[A-Za-z\s&.-]{2,100}$/;
+            isValid = nameRegex.test(value);
+            if (!isValid) showError(fieldName + 'Error');
+            break;
+          case 'ngoRegNumber':
+            isValid = value.length >= 3;
+            if (!isValid) showError('regNumberError');
+            break;
+          case 'email':
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            isValid = emailRegex.test(value);
+            if (isValid) showSuccess('emailSuccess');
+            else showError('emailError');
+            break;
+          case 'contact':
+            const contactRegex = /^[6-9]\d{9}$/;
+            isValid = contactRegex.test(value);
+            if (!isValid) showError('contactError');
+            break;
+          case 'organizationType':
+            isValid = value !== '';
+            if (!isValid) showError('typeError');
+            break;
+          case 'address':
+            isValid = value.length >= 10;
+            if (!isValid) showError('addressError');
+            break;
+        }
+        if (isValid) field.classList.add('is-valid');
+        else field.classList.add('is-invalid');
+        return isValid;
+      }
+      function showError(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) element.style.display = 'block';
+      }
+      function showSuccess(elementId) {
+        const element = document.getElementById(elementId);
+        if (element) element.style.display = 'block';
+      }
+      function hideAllErrors(fieldName) {
+        const errorMap = {
+          'ngoName': ['ngoNameError'],
+          'ngoRegNumber': ['regNumberError'],
+          'founderName': ['founderNameError'],
+          'email': ['emailError', 'emailSuccess'],
+          'contact': ['contactError'],
+          'organizationType': ['typeError'],
+          'address': ['addressError']
+        };
+        if (errorMap[fieldName]) {
+          errorMap[fieldName].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.style.display = 'none';
+          });
+        }
+      }
+
+      //form submission
+      document.getElementById("ngoVerificationForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const fields = ['ngoName', 'ngoRegNumber', 'founderName', 'email', 'contact', 'organizationType', 'address'];
+        let allValid = true;
+        fields.forEach(field => {
+          if (!validateField(field)) allValid = false;
+        });
+
+        //defensive: check if file input exists and has files
+        if (!fileInput || !fileInput.files || fileInput.files.length === 0) {
+          showError('docError');
+          allValid = false;
+        }
+
+        //only allowing PDF if backend needs it (else, "Document upload failed")
+        if (allValid && fileInput.files[0] && fileInput.files[0].type !== "application/pdf") {
+          alert("Only PDF files are accepted for now. Please select a PDF file.");
+          showError('docError');
+          return;
+        }
+
+        if (!allValid) {
+          alert('Please fix all errors before submitting.');
+          return;
+        }
+
+        const formData = new FormData();
+        formData.append("ngoName", document.getElementById('ngoName').value.trim());
+        formData.append("ngoRegNumber", document.getElementById('ngoRegNumber').value.trim());
+        formData.append("founderName", document.getElementById('founderName').value.trim());
+        formData.append("email", document.getElementById('email').value.trim());
+        formData.append("contact", document.getElementById('contact').value.trim());
+        formData.append("organizationType", document.getElementById('organizationType').value);
+        formData.append("address", document.getElementById('address').value.trim());
+        formData.append("description", document.getElementById('description').value.trim());
+        formData.append("document", fileInput.files[0]);
+
+        try {
+          const res = await fetch("http://localhost:5001/ngo/apply", {
+            method: "POST",
+            body: formData
+          });
+
+          const data = await res.json();
+          if (data.success) {
+  const modal = document.getElementById('successModal');
+  modal.style.display = 'flex'; 
+  
+  //hide modal after 30 seconds
+  setTimeout(() => {
+    modal.style.display = 'none';
+  }, 30000);
+} else {
+  alert('Submission failed: ' + data.message);
+}
+        } catch (err) {
+          console.error("NGO Submit Error:", err);
+          alert("Network error. Please check your connection and try again.");
+        }
+      });
+
+      function redirectToLogin() {
+        window.location.href = "../../../landing.html#login";
+      }
+
+      setupValidation();
+    });
+  </script>
+</body>
+</html>

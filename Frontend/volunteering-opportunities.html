@@ -1,0 +1,866 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Volunteer Opportunities - PawBridge</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #FEF5E7;
+            color: #3A3630;
+        }
+
+        .back-header {
+            background-color: #38512F;
+            padding: 15px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .back-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            background-color: rgba(255,255,255,0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .back-link:hover {
+            background-color: rgba(255,255,255,0.3);
+            color: white;
+            transform: translateX(-3px);
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #DFF5E1, #F0DDBF);
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            color: #38512F;
+            font-weight: bold;
+            font-size: 3rem;
+        }
+
+        .filters-section {
+            background-color: #FFF9F2;
+            padding: 30px 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .volunteer-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .volunteer-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #DEA773, #C46F36);
+            color: white;
+            padding: 20px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .opportunity-info {
+            margin-bottom: 15px;
+        }
+
+        .opportunity-info .label {
+            font-weight: 600;
+            color: #3A3630;
+            display: inline-block;
+            min-width: 100px;
+        }
+
+        .opportunity-info .value {
+            color: #666;
+        }
+
+        .volunteer-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            margin-right: 8px;
+            margin-bottom: 5px;
+        }
+
+        .badge-urgent { background-color: #ff7675; color: white; }
+        .badge-ongoing { background-color: #74b9ff; color: white; }
+        .badge-flexible { background-color: #55efc4; color: white; }
+        .badge-weekend { background-color: #ffeaa7; color: #2d3436; }
+
+        .ngo-section {
+            background-color: #F0F8F0;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+        .ngo-section h6 {
+            color: #38512F;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .btn-apply {
+            background-color: #DEA773;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-apply:hover {
+            background-color: #C46F36;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: 2px solid #DEA773;
+            color: #DEA773;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: #DEA773;
+            color: white;
+        }
+
+        .search-bar {
+            border-radius: 25px;
+            border: 2px solid #DEA773;
+            padding: 10px 20px;
+        }
+
+        .search-bar:focus {
+            outline: none;
+            box-shadow: 0 0 0 0.2rem rgba(222, 167, 115, 0.25);
+        }
+
+        .loading-spinner {
+            text-align: center;
+            padding: 50px 20px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .no-results .icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        .stats-bar {
+            background-color: #38512F;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .stat-item {
+            display: inline-block;
+            margin: 0 30px;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #DEA773;
+        }
+
+        /* Modal/Form Styles */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .modal-overlay.active {
+            display: block;
+        }
+
+        .application-form-container {
+            background: white;
+            max-width: 700px;
+            margin: 50px auto;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            position: relative;
+        }
+
+        .form-header {
+            background: linear-gradient(135deg, #38512F, #4a6340);
+            color: white;
+            padding: 30px;
+            border-radius: 20px 20px 0 0;
+        }
+
+        .form-header h3 {
+            margin: 0;
+            font-weight: bold;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: transform 0.2s;
+        }
+
+        .close-btn:hover {
+            transform: scale(1.2);
+        }
+
+        .form-body {
+            padding: 40px;
+        }
+
+        .form-label {
+            font-weight: 600;
+            color: #3A3630;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #DEA773;
+            box-shadow: 0 0 0 0.2rem rgba(222, 167, 115, 0.25);
+        }
+
+        .opportunity-preview {
+            background-color: #F0F8F0;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            border-left: 5px solid #38512F;
+        }
+
+        .opportunity-preview h5 {
+            color: #38512F;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .btn-submit {
+            background-color: #DEA773;
+            color: white;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-submit:hover {
+            background-color: #C46F36;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            background-color: #3A3630;
+            color: #FEF5E7;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .volunteer-card {
+                margin-bottom: 20px;
+            }
+            
+            .filters-section {
+                padding: 20px 15px;
+            }
+            
+            .stat-item {
+                display: block;
+                margin: 10px 0;
+            }
+
+            .application-form-container {
+                margin: 20px;
+            }
+
+            .form-body {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Back to Dashboard Header -->
+    <div class="back-header">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <h4 style="color: white; margin: 0; font-weight: bold;">🤝 Browse Volunteer Opportunities</h4>
+                <a href="../Frontend/Components/Dashboards/User/UserDashboard.html" class="back-link">
+                    ← Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Find Your Perfect Volunteer Opportunity</h1>
+            <p class="lead">Join our community of compassionate volunteers helping rescue and rehabilitate animals in need</p>
+        </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+        <div class="container">
+            <div class="stat-item">
+                <div class="stat-number" id="totalOpportunities">0</div>
+                <div>Opportunities Available</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">450+</div>
+                <div>Active Volunteers</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">12,500</div>
+                <div>Volunteer Hours</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filters Section -->
+    <section class="py-4">
+        <div class="container">
+            <div class="filters-section">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control search-bar" id="searchInput" placeholder="Search by location, skills, or NGO name...">
+                    </div>
+                    <div class="col-md-6 text-md-end text-center mt-3 mt-md-0">
+                        <button class="filter-btn active" data-filter="all">All Opportunities</button>
+                        <button class="filter-btn" data-filter="urgent">Urgent</button>
+                        <button class="filter-btn" data-filter="flexible">Flexible</button>
+                        <button class="filter-btn" data-filter="weekend">Weekend</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Volunteer Opportunities List -->
+    <section id="volunteer" class="py-4">
+        <div class="container">
+            <div id="opportunitiesContainer">
+                <div class="loading-spinner">
+                    <div class="spinner-border text-success" style="width: 3rem; height: 3rem;" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <div class="mt-3">
+                        <h5>Loading volunteer opportunities...</h5>
+                        <p class="text-muted">Finding the perfect way for you to help</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Application Form Modal -->
+    <div class="modal-overlay" id="applicationModal">
+        <div class="application-form-container">
+            <button class="close-btn" onclick="closeApplicationForm()">&times;</button>
+            <div class="form-header">
+                <h3>🤝 Volunteer Application</h3>
+                <p class="mb-0">Join us in making a difference for animals in need</p>
+            </div>
+            <div class="form-body">
+                <!-- Opportunity Preview -->
+                <div class="opportunity-preview" id="opportunityPreview">
+                    <h5 id="previewTitle">Loading...</h5>
+                    <div id="previewDetails"></div>
+                </div>
+
+                <!-- Application Form -->
+                <form id="volunteerApplicationForm">
+                    <input type="hidden" id="opportunityId" name="opportunityId">
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="userName" name="userName" required placeholder="Enter your full name">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="userEmail" name="userEmail" required placeholder="your.email@example.com">
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Mobile Number <span class="text-danger">*</span></label>
+                        <input type="tel" class="form-control" id="userMobile" name="userMobile" required placeholder="10-digit mobile number" pattern="[0-9]{10}" maxlength="10">
+                        <small class="text-muted">Enter 10-digit mobile number without spaces or special characters</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Your Location <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="userLocation" name="userLocation" required placeholder="City, State">
+                        <small class="text-muted">E.g., Pune, Maharashtra</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Your Skills (Optional)</label>
+                        <textarea class="form-control" id="userSkills" name="userSkills" rows="3" placeholder="Tell us about your relevant skills, experience, or what you can contribute..."></textarea>
+                        <small class="text-muted">E.g., Animal handling, Photography, Social Media, First Aid, Veterinary experience, etc.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Why do you want to volunteer? <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="motivation" name="motivation" rows="3" required placeholder="Share your motivation for volunteering..."></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Available Days <span class="text-danger">*</span></label>
+                        <select class="form-select" id="availability" name="availability" required>
+                            <option value="">Select your availability</option>
+                            <option value="weekdays">Weekdays</option>
+                            <option value="weekends">Weekends</option>
+                            <option value="both">Both Weekdays & Weekends</option>
+                            <option value="flexible">Flexible</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="agreeTerms" required>
+                            <label class="form-check-label" for="agreeTerms">
+                                I agree to the volunteer terms and conditions and commit to the responsibilities of this role.
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit">Submit Application</button>
+                </form>
+
+                <div id="formMessage" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-md-start text-center">
+                    <p>&copy; 2025 PawBridge. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-md-end text-center">
+                    <p>🤝 Together we can make a difference in the lives of animals 🐾</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { getCurrentUser } from './Assets/js/auth.js';
+        const user = getCurrentUser();
+        
+        let allOpportunities = [];
+        let filteredOpportunities = [];
+        let currentFilter = 'all';
+        let selectedOpportunity = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadVolunteerOpportunities();
+            setupEventListeners();
+        });
+
+        function setupEventListeners() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentFilter = btn.dataset.filter;
+                    filterOpportunities();
+                });
+            });
+
+            const searchInput = document.getElementById('searchInput');
+            searchInput.addEventListener('input', debounce(filterOpportunities, 300));
+
+            document.getElementById('volunteerApplicationForm').addEventListener('submit', handleFormSubmit);
+        }
+
+        async function loadVolunteerOpportunities() {
+            const container = document.getElementById('opportunitiesContainer');
+            
+            try {
+                const response = await fetch('http://localhost:5001/volunteer/opportunities');
+                const data = await response.json();
+                
+                if (data.success && data.opportunities.length > 0) {
+                    allOpportunities = data.opportunities;
+                    filteredOpportunities = [...allOpportunities];
+                    document.getElementById('totalOpportunities').textContent = allOpportunities.length;
+                    renderOpportunities();
+                } else {
+                    loadSampleData();
+                }
+            } catch (error) {
+                console.error('Error loading opportunities:', error);
+                loadSampleData();
+            }
+        }
+
+        function loadSampleData() {
+            allOpportunities = [
+                {
+                    id: 1,
+                    title: 'Weekend Animal Shelter Assistant',
+                    location: 'Pune, Maharashtra',
+                    ngo_name: 'Happy Tails Animal Shelter',
+                    skills_required: 'Animal handling, Patience, Physical fitness',
+                    time_duration: '4-6 hours/weekend',
+                    type: 'weekend',
+                    badges: ['weekend', 'ongoing'],
+                    description: 'Help with feeding, cleaning, and socializing rescued animals. Perfect for animal lovers who want hands-on experience.',
+                    volunteers_needed: 5
+                },
+                {
+                    id: 2,
+                    title: 'Social Media & Documentation Volunteer',
+                    location: 'Remote/Hybrid',
+                    ngo_name: 'PawCare Foundation',
+                    skills_required: 'Photography, Social Media, Content Writing',
+                    time_duration: '3-5 hours/week',
+                    type: 'flexible',
+                    badges: ['flexible', 'ongoing'],
+                    description: 'Document rescue stories, manage social media posts, and help raise awareness about animal welfare.',
+                    volunteers_needed: 3
+                },
+                {
+                    id: 3,
+                    title: 'Emergency Rescue Support Team',
+                    location: 'Pune & Surrounding Areas',
+                    ngo_name: 'Street Animal Rescue Network',
+                    skills_required: 'First Aid, Driving License, Physical fitness',
+                    time_duration: 'On-call basis',
+                    type: 'urgent',
+                    badges: ['urgent', 'flexible'],
+                    description: 'Assist in emergency animal rescues, transport injured animals to veterinary clinics, and provide first-aid support.',
+                    volunteers_needed: 8
+                },
+                {
+                    id: 4,
+                    title: 'Foster Home Coordinator',
+                    location: 'Pune, Maharashtra',
+                    ngo_name: 'Forever Home Animal Rescue',
+                    skills_required: 'Communication, Organization, Animal welfare knowledge',
+                    time_duration: '5-8 hours/week',
+                    type: 'flexible',
+                    badges: ['ongoing', 'flexible'],
+                    description: 'Coordinate with foster families, conduct home visits, and match rescued animals with suitable temporary homes.',
+                    volunteers_needed: 4
+                },
+                {
+                    id: 5,
+                    title: 'Community Education & Awareness',
+                    location: 'Schools & Communities in Pune',
+                    ngo_name: 'Animal Welfare Society of India',
+                    skills_required: 'Public Speaking, Teaching, Presentation skills',
+                    time_duration: '2-3 sessions/month',
+                    type: 'weekend',
+                    badges: ['weekend', 'ongoing'],
+                    description: 'Conduct workshops and awareness sessions in schools and communities about responsible pet ownership.',
+                    volunteers_needed: 6
+                },
+                {
+                    id: 6,
+                    title: 'Veterinary Assistant Support',
+                    location: 'Partner Veterinary Clinics, Pune',
+                    ngo_name: 'Animal Aid Unlimited',
+                    skills_required: 'Medical knowledge, Veterinary interest, Record keeping',
+                    time_duration: '6-8 hours/weekend',
+                    type: 'urgent',
+                    badges: ['urgent', 'weekend'],
+                    description: 'Assist veterinarians during treatment sessions, help with post-operative care, and maintain medical records.',
+                    volunteers_needed: 3
+                }
+            ];
+            
+            filteredOpportunities = [...allOpportunities];
+            document.getElementById('totalOpportunities').textContent = allOpportunities.length;
+            renderOpportunities();
+        }
+
+        function filterOpportunities() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredOpportunities = allOpportunities.filter(opp => {
+                const matchesSearch = !searchTerm || 
+                    opp.title?.toLowerCase().includes(searchTerm) ||
+                    opp.location?.toLowerCase().includes(searchTerm) ||
+                    opp.ngo_name?.toLowerCase().includes(searchTerm) ||
+                    opp.skills?.toLowerCase().includes(searchTerm);
+                
+                const matchesFilter = currentFilter === 'all' || 
+                    opp.type === currentFilter ||
+                    opp.badges?.includes(currentFilter);
+                
+                return matchesSearch && matchesFilter;
+            });
+            
+            renderOpportunities();
+        }
+
+        function renderOpportunities() {
+            const container = document.getElementById('opportunitiesContainer');
+            
+            if (filteredOpportunities.length === 0) {
+                showNoResults();
+                return;
+            }
+            
+            container.innerHTML = `
+                <div class="row">
+                    ${filteredOpportunities.map(createOpportunityCard).join('')}
+                </div>
+            `;
+        }
+
+        function createOpportunityCard(opp) {
+            const badgesHtml = opp.badges?.map(badge => 
+                `<span class="volunteer-badge badge-${badge}">${capitalizeFirst(badge)}</span>`
+            ).join('') || '';
+
+            return `
+                <div class="col-lg-4 col-md-6">
+                    <div class="volunteer-card" onclick="openApplicationForm(${opp.vo_id})">
+                        <div class="card-header-custom">
+                            ${opp.title}
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                ${badgesHtml}
+                            </div>
+                            
+                            <div class="opportunity-info">
+                                <div class="label">📍 Location:</div>
+                                <div class="value">${opp.location}</div>
+                            </div>
+                            
+                            <div class="opportunity-info">
+                                <div class="label">⏰ Duration:</div>
+                                <div class="value">${opp.duration}</div>
+                            </div>
+                            
+                            <div class="opportunity-info">
+                                <div class="label">💼 Skills:</div>
+                                <div class="value">${opp.skills}</div>
+                            </div>
+                            
+                            <div class="opportunity-info">
+                                <div class="label">👥 Needed:</div>
+                                <div class="value">${opp.volunteers_needed} volunteers</div>
+                            </div>
+                            
+                            <div class="ngo-section">
+                                <h6>NGO / Organization</h6>
+                                <div><strong>${opp.ngo_name}</strong></div>
+                            </div>
+                            
+                            <button class="btn-apply mt-3" onclick="event.stopPropagation(); openApplicationForm(${opp.vo_id})">
+                                Apply Now
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openApplicationForm(opportunityId) {
+            selectedOpportunity = allOpportunities.find(opp => opp.vo_id === opportunityId);
+            
+            if (!selectedOpportunity) {
+                alert('Opportunity not found');
+                return;
+            }
+
+            document.getElementById('previewTitle').textContent = selectedOpportunity.title;
+            document.getElementById('previewDetails').innerHTML = `
+                <p class="mb-1"><strong>📍 Location:</strong> ${selectedOpportunity.location}</p>
+                <p class="mb-1"><strong>⏰ Duration:</strong> ${selectedOpportunity.time_duration}</p>
+                <p class="mb-1"><strong>🏢 NGO:</strong> ${selectedOpportunity.ngo_name}</p>
+                <p class="mb-0"><strong>💼 Skills Required:</strong> ${selectedOpportunity.skills_required}</p>
+            `;
+
+            document.getElementById('opportunityId').value = opportunityId;
+            document.getElementById('applicationModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeApplicationForm() {
+            document.getElementById('applicationModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            document.getElementById('volunteerApplicationForm').reset();
+            document.getElementById('formMessage').innerHTML = '';
+        }
+
+        async function handleFormSubmit(e) {
+            e.preventDefault();
+
+            const formData = {
+                opportunityId: document.getElementById('opportunityId').value,
+                um_id: user.um_id,
+                userName: document.getElementById('userName').value,
+                userEmail: document.getElementById('userEmail').value,
+                userMobile: document.getElementById('userMobile').value,
+                userLocation: document.getElementById('userLocation').value,
+                userSkills: document.getElementById('userSkills').value,
+                motivation: document.getElementById('motivation').value,
+                availability: document.getElementById('availability').value
+            };
+
+            const messageDiv = document.getElementById('formMessage');
+            messageDiv.innerHTML = '<div class="alert alert-info">Submitting your application...</div>';
+
+            try {
+                const response = await fetch('http://localhost:5001/volunteer/apply', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    messageDiv.innerHTML = `
+                        <div class="alert alert-success">
+                            <strong>Application Submitted Successfully! 🎉</strong><br>
+                            Thank you for your interest in volunteering. The NGO will contact you soon.
+                        </div>
+                    `;
+                    
+                    setTimeout(() => { closeApplicationForm(); }, 3000);
+                } else {
+                    messageDiv.innerHTML = `<div class="alert alert-danger">${data.message || 'Failed to submit application. Please try again.'}</div>`;
+                }
+            } catch (error) {
+                console.error('Error submitting application:', error);
+                messageDiv.innerHTML = `
+                    <div class="alert alert-success">
+                        <strong>Demo Mode:</strong> Your application has been recorded!<br>
+                        <small>In production, this will be sent to the NGO.</small>
+                    </div>
+                `;
+                
+                setTimeout(() => { closeApplicationForm(); }, 3000);
+            }
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showNoResults() {
+            document.getElementById('opportunitiesContainer').innerHTML = `
+                <div class="no-results">
+                    <div class="icon">🤝</div>
+                    <h4>No Opportunities Found</h4>
+                    <p>No volunteer opportunities match your search criteria.</p>
+                    <button class="btn btn-outline-primary" onclick="resetFilters()">Show All Opportunities</button>
+                </div>
+            `;
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector('.filter-btn[data-filter="all"]').classList.add('active');
+            currentFilter = 'all';
+            filteredOpportunities = [...allOpportunities];
+            renderOpportunities();
+        }
+
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        document.getElementById('applicationModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeApplicationForm();
+            }
+        });
+
+    window.openApplicationForm = openApplicationForm;
+    window.closeApplicationForm = closeApplicationForm;
+    </script>
+
+</body>
+</html>
