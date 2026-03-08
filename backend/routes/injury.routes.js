@@ -127,7 +127,7 @@ router.post("/injury-report", uploadInjuryImage.single("photo"), async (req, res
       message: "Injury report submitted and NGO assigned",
       reportId,
       nearestNGO: firstNGO.um_name,
-      totalNGOsInRange: nearbyNGOs.length
+      // totalNGOsInRange: nearbyNGOs.length
     });
 
   } catch (err) {
@@ -165,7 +165,7 @@ router.get("/reports/list/:ngoId", async (req, res) => {
       report_id: r.report_id,
       location: r.location,
       injury: r.injury,
-      image_url: r.image_filename ? `${host}/uploads/injury_reports/${r.image_filename}` : null,
+      image_url: r.image_filename,
       status: r.status,
       reported_at: r.reported_at,
       animal_type: r.animal_type,

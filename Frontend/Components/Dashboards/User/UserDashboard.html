@@ -785,7 +785,7 @@
             Report #${report.ir_id} - <span class="status-badge status-${report.ir_status.toLowerCase().replace(/ /g,'-')}">${report.ir_status.replace(/_/g,' ')}</span>
           </div>
           <div class="card-body">
-            ${report.ir_image_url ? `<img src="http://localhost:5001/uploads/injury_reports/${report.ir_image_url}" class="img-fluid mb-2" style="max-height:200px; object-fit:cover;">` : ''}
+            ${report.ir_image_url ? `<img src="${report.ir_image_url}" class="img-fluid mb-2" style="max-height:200px; object-fit:cover;">` : ''}
             <p><strong>Description:</strong> ${report.ir_description}</p>
             
             <p><strong>Assigned NGO:</strong> ${report.assigned_ngo_name || "Not assigned yet"}</p>

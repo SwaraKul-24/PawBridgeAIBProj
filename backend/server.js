@@ -36,6 +36,77 @@ app.use(donationRoutes);
 app.use(dashboardRoutes);
 app.use(volunteerRoutes);
 
+app.post("/ai-analyze", async (req, res) => {
+
+  try {
+
+    const image = req.body.image;
+
+const prompt = `
+Analyze this injured animal image.
+
+Return ONLY JSON:
+
+{
+ "animal_type":"dog | cat | cow | goat | sheep | snake",
+ "injury_description":"short description",
+ "severity":"Low | Medium | Critical"
+}
+`;
+
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1/models/gemini-2.5-flash:generateContent?key=${process.env.GEMINI_KEY}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          contents: [
+            {
+              parts: [
+                { text: prompt },
+                {
+                  inline_data: {
+                    mime_type: "image/jpeg",
+                    data: image
+                  }
+                }
+              ]
+            }
+          ]
+        })
+      }
+    );
+
+    const data = await response.json();
+    console.log("Gemini raw response:", data);
+
+let text = data.candidates[0].content.parts[0].text;
+
+// remove markdown if Gemini adds it
+text = text.replace(/```json/g, "").replace(/```/g, "").trim();
+
+let ai = {};
+
+try {
+  ai = JSON.parse(text);
+} catch (err) {
+  console.error("AI JSON parse error:", text);
+}
+
+res.json(ai);
+
+  } catch (error) {
+
+    console.error(error);
+
+    res.json({});
+
+  }
+
+});
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () =>
   console.log(`🚀 PawBridge Server running on port ${PORT}`)

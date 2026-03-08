@@ -78,6 +78,9 @@ CREATE TABLE injury_report (
     FOREIGN KEY (atm_id) REFERENCES animal_type_master(atm_id) ON DELETE CASCADE,
     FOREIGN KEY (assigned_ngo_id) REFERENCES user_master(um_id) ON DELETE SET NULL
 );
+---------------------------  imp ---------------
+ALTER TABLE injury_report
+ADD severity ENUM('Low','Medium','Critical') DEFAULT 'Medium';
 
 -- 6. NGO Response/Tracking Table
 CREATE TABLE ngo_response (

@@ -207,7 +207,8 @@
   <script type="module">
   //user session check
   const user = JSON.parse(sessionStorage.getItem("user") || "{}");
-  console.log(user);
+  //console.log(user);
+  let aiResult = {};
 
   if (!user.um_id) {
     alert("Please login first");
@@ -295,6 +296,7 @@
 
   //form persistence helpers
   const form = document.getElementById("injuryReportForm");
+  document.getElementById("photo").addEventListener("change", analyzeImage);
 
   function persistForm() {
     const formData = {
@@ -347,6 +349,7 @@
       formData.append("longitude", longitude);
       formData.append("locationAddress", document.getElementById("locationAddress").value);
       formData.append("description", description);
+      formData.append("severity", aiResult.severity || "Medium");
 
       const photo = document.getElementById("photo").files[0];
       if (photo) formData.append("photo", photo);
@@ -382,6 +385,52 @@
     mapContainer.style.cursor = "grab";
     sessionStorage.removeItem("injuryReportDraft");
   });
+
+async function analyzeImage(event) {
+
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = async function () {
+
+    const base64Image = reader.result.split(",")[1];
+
+    const res = await fetch("http://localhost:5001/ai-analyze", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        image: base64Image
+      })
+    });
+
+    aiResult = await res.json();
+    console.log("AI result:", aiResult);
+
+    if (aiResult.animal_type) {
+      document.getElementById("animalType").value = aiResult.animal_type;
+    }
+
+    if (aiResult.injury_description) {
+      document.getElementById("description").value = aiResult.injury_description;
+    }
+
+    if (aiResult.severity) {
+
+      if (aiResult.severity === "Critical") {
+        alert("⚠ Critical injury detected. This report will be prioritized.");
+      }
+
+    }
+
+  };
+
+  reader.readAsDataURL(file);
+
+}
 </script>
 
 </body>
