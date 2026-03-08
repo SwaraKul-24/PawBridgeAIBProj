@@ -132,6 +132,13 @@
         <div class="col-md-10 feature-card">
           <h3 class="mb-4 text-center">Report an Animal Injury</h3>
           <form id="injuryReportForm" enctype="multipart/form-data">
+            
+            <div class="mb-3">
+              <label for="photo" class="form-label">Upload Photo</label>
+              <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
+              <small class="form-text text-muted">A photo helps NGOs assess the situation better.</small>
+            </div>
+
             <!--animal type dropdown -->
             <div class="mb-3">
               <label for="animalType" class="form-label">Select Animal Type <span class="required">*</span></label>
@@ -178,12 +185,6 @@
               <label for="description" class="form-label">Describe the Animal's Condition <span class="required">*</span></label>
               <textarea class="form-control" id="description" rows="4" placeholder="Mention visible injuries, behavior, size, urgency level, etc." required></textarea>
               <div class="invalid-feedback">Please describe the animal's condition.</div>
-            </div>
-
-            <div class="mb-3">
-              <label for="photo" class="form-label">Upload Photo</label>
-              <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-              <small class="form-text text-muted">A photo helps NGOs assess the situation better.</small>
             </div>
 
             <div class="d-flex gap-3">
