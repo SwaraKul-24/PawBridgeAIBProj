@@ -336,7 +336,6 @@
     <button class="sidebar-link" onclick="showSection('notifications')" id="nav-notifications">🔔 Notifications</button>
     <button class="sidebar-link" onclick="showSection('profile')" id="nav-profile">👤 Profile</button>
     <div class="flex-grow-1"></div>
-    <button class="logout-btn mt-4" onclick="logout()">Logout</button>
   </div>
 
   <!-- Main Content -->
@@ -345,6 +344,7 @@
     <div id="dashboard" class="content-section active">
       <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Welcome, <span id="userName">User</span>!</h2>
+        <button class="logout-btn mt-4" onclick="logout()">Logout</button>
         <small class="text-muted">Last login: <span id="lastLogin">Just now</span></small>
       </div>
       <div class="row">
