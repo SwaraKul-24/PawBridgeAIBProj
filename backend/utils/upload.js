@@ -2,6 +2,10 @@ import fs from "fs";
 import path from "path";
 import multer from "multer";
 
+export const uploadInjuryImage = multer({
+  storage: multer.memoryStorage()
+});
+
 const uploadDirs = ["uploads/ngo_docs/", "uploads/injury_reports/", "uploads/adoptions/"];
 uploadDirs.forEach(dir => {
   if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
@@ -33,7 +37,7 @@ export const imageFilter = (req, file, cb) => {
 };
 
 export const uploadNgoDoc = multer({ storage: ngoDocStorage, fileFilter: ngoDocFilter, limits: { fileSize: 5*1024*1024 } });
-export const uploadInjuryImage = multer({ storage: injuryReportStorage, fileFilter: imageFilter, limits: { fileSize: 5*1024*1024 } });
+// export const uploadInjuryImage = multer({ storage: injuryReportStorage, fileFilter: imageFilter, limits: { fileSize: 5*1024*1024 } });
 export const uploadAdoptionImage = multer({ storage: adoptionStorage, fileFilter: imageFilter, limits: { fileSize: 5*1024*1024 } });
 
 //ADOPTION ROUTE

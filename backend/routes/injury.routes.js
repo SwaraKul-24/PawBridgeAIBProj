@@ -2,12 +2,18 @@ import express from "express";
 import { pool } from "../db.js";
 import { uploadInjuryImage } from "../utils/upload.js";
 import { calculateDistance, routeToNextNGO } from "../utils/helpers.js";
+import { uploadToS3 } from "../utils/s3.js";
 const router = express.Router();
 
 router.post("/injury-report", uploadInjuryImage.single("photo"), async (req, res) => {
   try {
     const { userId, animalType, latitude, longitude, locationAddress, description } = req.body;
-    const imageUrl = req.file ? req.file.filename : null;
+    // const imageUrl = req.file ? req.file.filename : null;
+    let imageUrl = null;
+
+    if (req.file) {
+      imageUrl = await uploadToS3(req.file);
+    }
 
     // 1️⃣ Validate animal type
     const [animalTypes] = await pool.query(
