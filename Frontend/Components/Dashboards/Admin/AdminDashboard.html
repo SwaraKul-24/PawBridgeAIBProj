@@ -531,8 +531,8 @@
   async function loadDashboardStats() {
   try {
     const [ngoAppsRes, rejectedRes] = await Promise.all([
-      fetch('${process.env.BACKEND_URL}/admin/ngo-applications'),
-      fetch('${process.env.BACKEND_URL}/admin/rejected-reports')
+      fetch(`${process.env.BACKEND_URL}/admin/ngo-applications`),
+      fetch(`${process.env.BACKEND_URL}/admin/rejected-reports`)
     ]);
     
     const ngoAppsData = await ngoAppsRes.json();
@@ -585,7 +585,7 @@
     container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
     
     try {
-      const response = await fetch('${process.env.BACKEND_URL}/admin/ngo-applications');
+      const response = await fetch(`${process.env.BACKEND_URL}/admin/ngo-applications`);
       const data = await response.json();
       
       if (data.success && data.applications.length > 0) {
@@ -718,7 +718,7 @@
     }
     
     try {
-      const response = await fetch('${process.env.BACKEND_URL}/admin/ngo-decision', {
+      const response = await fetch(`${process.env.BACKEND_URL}/admin/ngo-decision`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -807,7 +807,7 @@ async function loadNGOList() {
     <div class="spinner-border"></div> Loading...</td></tr>`;
 
   try {
-    const res = await fetch('${process.env.BACKEND_URL}/admin/ngo-applications-all');
+    const res = await fetch(`${process.env.BACKEND_URL}/admin/ngo-applications-all`);
     const data = await res.json();
 
     if (data.success && data.applications.length > 0) {
@@ -844,7 +844,7 @@ async function loadRejectedReports() {
   container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
 
   try {
-    const response = await fetch('${process.env.BACKEND_URL}/admin/rejected-reports');
+    const response = await fetch(`${process.env.BACKEND_URL}/admin/rejected-reports`);
     const data = await response.json();
 // // ${report.attempted_count} out of ${report.total_ngos_in_range} 
 
