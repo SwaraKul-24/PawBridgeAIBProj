@@ -106,7 +106,7 @@ router.get("/adoptions/all", async (req, res) => {
       ORDER BY ap.created_at DESC
     `);
 
-    const host = process.env.BACKEND_URL || "http://localhost:5001";
+    const host = process.env.BACKEND_URL || "https://pawbridge-backend-3277.onrender.com";
     const postsWithFullImage = posts.map(post => ({
       ...post,
       image_url: post.image_url ? `${host}/uploads/adoptions/${post.image_url}` : null

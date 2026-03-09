@@ -139,7 +139,7 @@ router.post("/injury-report", uploadInjuryImage.single("photo"), async (req, res
 router.get("/reports/list/:ngoId", async (req, res) => {
   const { ngoId } = req.params;
   try {
-    const host = process.env.BACKEND_URL || (`http://localhost:${process.env.PORT || 5001}`);
+    const host = process.env.BACKEND_URL || (`https://pawbridge-backend-3277.onrender.com`);
 
     const [rows] = await pool.query(
       `SELECT 
