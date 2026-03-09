@@ -355,7 +355,7 @@
       const photo = document.getElementById("photo").files[0];
       if (photo) formData.append("photo", photo);
 
-      const res = await fetch(`${process.env.BACKEND_URL}/injury-report`, {
+      const res = await fetch(`https://pawbridge-backend-3277.onrender.com/injury-report`, {
         method: "POST",
         body: formData,
       });
@@ -398,7 +398,7 @@ async function analyzeImage(event) {
 
     const base64Image = reader.result.split(",")[1];
 
-    const res = await fetch(`${process.env.BACKEND_URL}/ai-analyze`, {
+    const res = await fetch(`https://pawbridge-backend-3277.onrender.com/ai-analyze`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
