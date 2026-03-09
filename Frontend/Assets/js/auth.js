@@ -24,7 +24,7 @@ export function removeUser(role) {
 }
 
 // Logout function
-export function logout(role, redirectUrl = '../../../landing.html#login') {
+export function logout(role, redirectUrl = '../../../index.html#login') {
     removeUser(role);
     window.location.href = redirectUrl;
 }
