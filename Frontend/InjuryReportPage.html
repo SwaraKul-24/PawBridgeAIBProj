@@ -409,7 +409,7 @@ async function analyzeImage(event) {
     });
 
     aiResult = await res.json();
-    console.log("AI result:", aiResult);
+    //console.log("AI result:", aiResult);
 
     if (aiResult.animal_type) {
       document.getElementById("animalType").value = aiResult.animal_type;
