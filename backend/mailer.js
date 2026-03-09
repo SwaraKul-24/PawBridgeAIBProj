@@ -9,14 +9,15 @@ export const transporter = nodemailer.createTransport({
   }
 });
 
-// Verify SMTP connection once when server starts
-transporter.verify((error, success) => {
-  if (error) {
-    console.error("SMTP connection failed:", error);
-  } else {
-    console.log("SMTP connection successful, ready to send mails!");
-  }
-});
+// // Verify SMTP connection once when server starts
+// transporter.verify((error, success) => {
+//   if (error) {
+//     console.error("SMTP connection failed:", error);
+//   } else {
+//     console.log("SMTP connection successful, ready to send mails!");
+//   }
+// });
+
 // Function to send email
 export const sendCredentialsMail = async (to, username, password) => {
   const mailOptions = {
