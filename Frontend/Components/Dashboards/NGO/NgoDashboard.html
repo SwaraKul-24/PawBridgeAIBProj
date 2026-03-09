@@ -595,7 +595,7 @@ function loadCaseReports() {
     return;
   }
 
-  fetch(`http://localhost:5001/reports/list/${loggedUser.um_id}`)
+  fetch(`${process.env.BACKEND_URL}/reports/list/${loggedUser.um_id}`)
     .then(res => {
       // Check if response is JSON before parsing
       const contentType = res.headers.get('content-type');
@@ -700,7 +700,7 @@ function loadUserProfile() {
   // const user = JSON.parse(localStorage.getItem("user"));
   if (!loggedUser) return;
 
-  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`)
+  fetch(`${process.env.BACKEND_URL}/user/profile/${loggedUser.um_id}`)
     .then(res => res.json())
     .then(data => {
       if (data.success) {
@@ -749,7 +749,7 @@ document.getElementById("profileForm").addEventListener("submit", function(e) {
 
   const updatedProfile = { um_name, um_email, um_contact, um_address };
 
-  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`, {
+  fetch(`${process.env.BACKEND_URL}/user/profile/${loggedUser.um_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updatedProfile)
@@ -802,7 +802,7 @@ function CaseStatus(reportId, buttonStatus) {
   if (!status) return alert("Invalid status");
 
   // FIXED: Changed from /reports// to /reports/update/
-  fetch(`http://localhost:5001/reports/update/${reportId}`, {
+  fetch(`${process.env.BACKEND_URL}/reports/update/${reportId}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ status , ngoId: loggedUser.um_id })
@@ -828,7 +828,7 @@ async function acceptReport(reportId) {
   if (!loggedUser) return alert("Not logged in");
 
   try {
-    const res = await fetch(`http://localhost:5001/reports/update/${reportId}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/reports/update/${reportId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "Accepted", ngoId: loggedUser.um_id })
@@ -855,7 +855,7 @@ async function rejectReport(reportId) {
   if (!confirm("Are you sure you want to reject this report?")) return;
 
   try {
-    const res = await fetch(`http://localhost:5001/reports/update/${reportId}`, {
+    const res = await fetch(`${process.env.BACKEND_URL}/reports/update/${reportId}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status: "Rejected", ngoId: loggedUser.um_id })
@@ -948,7 +948,7 @@ function showFloatingNotification(notification) {
 async function fetchNotifications() {
   if (!loggedUser) return;
   try {
-    const res = await fetch(`http://localhost:5001/ngo/notifications/${loggedUser.um_id}`);
+    const res = await fetch(`${process.env.BACKEND_URL}/ngo/notifications/${loggedUser.um_id}`);
     const data = await res.json();
     if (data.success && data.notifications && data.notifications.length) {
       const dismissed = getDismissedList();
@@ -973,7 +973,7 @@ function loadAdoptionPosts() {
   container.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
   if (!loggedUser) return container.innerHTML = '<div class="alert alert-danger">Not logged in</div>';
 
-  fetch(`http://localhost:5001/adoptions/list/${loggedUser.um_id}`)
+  fetch(`${process.env.BACKEND_URL}/adoptions/list/${loggedUser.um_id}`)
     .then(res => res.json())
     .then(data => {
       if (data.success) {
@@ -1014,7 +1014,7 @@ if (createAdoptionForm) {
     formData.append("ngoId", loggedUser.um_id);
 
     try {
-      const res = await fetch("http://localhost:5001/adoptions/add", { method: "POST", body: formData });
+      const res = await fetch("${process.env.BACKEND_URL}/adoptions/add", { method: "POST", body: formData });
       const data = await res.json();
       if (data.success) { alert(data.message); form.reset(); hideAdoptionForm(); loadAdoptionPosts(); }
       else alert(data.message);
@@ -1027,7 +1027,7 @@ if (createAdoptionForm) {
 
 // Other small helpers
 function removeAdoptionPost(apId) {
-  fetch(`http://localhost:5001/adoptions/remove/${apId}`, { method: "PUT" })
+  fetch(`${process.env.BACKEND_URL}/adoptions/remove/${apId}`, { method: "PUT" })
     .then(res => res.json())
     .then(data => {
       if (data.success) { alert(data.message); loadAdoptionPosts(); }

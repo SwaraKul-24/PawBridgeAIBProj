@@ -531,8 +531,8 @@
   async function loadDashboardStats() {
   try {
     const [ngoAppsRes, rejectedRes] = await Promise.all([
-      fetch('http://localhost:5001/admin/ngo-applications'),
-      fetch('http://localhost:5001/admin/rejected-reports')
+      fetch('${process.env.BACKEND_URL}/admin/ngo-applications'),
+      fetch('${process.env.BACKEND_URL}/admin/rejected-reports')
     ]);
     
     const ngoAppsData = await ngoAppsRes.json();
@@ -585,7 +585,7 @@
     container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
     
     try {
-      const response = await fetch('http://localhost:5001/admin/ngo-applications');
+      const response = await fetch('${process.env.BACKEND_URL}/admin/ngo-applications');
       const data = await response.json();
       
       if (data.success && data.applications.length > 0) {
@@ -619,7 +619,7 @@
                 <div class="mb-2">
                   <strong>Document:</strong>
                 </div>
-                <a href="http://localhost:5001/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-outline-primary btn-sm">
+                <a href="${process.env.BACKEND_URL}/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-outline-primary btn-sm">
                   📄 View Document
                 </a>
               </div>
@@ -685,7 +685,7 @@
     }
     
     try {
-      const response = await fetch('http://localhost:5001/admin/ngo-decision', {
+      const response = await fetch(`${process.env.BACKEND_URL}/admin/ngo-decision`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -718,7 +718,7 @@
     }
     
     try {
-      const response = await fetch('http://localhost:5001/admin/ngo-decision', {
+      const response = await fetch('${process.env.BACKEND_URL}/admin/ngo-decision', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -807,7 +807,7 @@ async function loadNGOList() {
     <div class="spinner-border"></div> Loading...</td></tr>`;
 
   try {
-    const res = await fetch('http://localhost:5001/admin/ngo-applications-all');
+    const res = await fetch('${process.env.BACKEND_URL}/admin/ngo-applications-all');
     const data = await res.json();
 
     if (data.success && data.applications.length > 0) {
@@ -822,7 +822,7 @@ async function loadNGOList() {
             <span class="status-badge status-${app.status.toLowerCase()}">${app.status}</span>
           </td>
           <td>
-            <a href="http://localhost:5001/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View</a>
+            <a href="${process.env.BACKEND_URL}/uploads/ngo_docs/${app.document_path}" target="_blank" class="btn btn-sm btn-outline-primary">📄 View</a>
           </td>
           <td>
             <button class="btn btn-sm btn-warning" onclick="editNGOStatus(${app.ngo_id}, '${app.status}')">✏️ Edit</button>
@@ -844,7 +844,7 @@ async function loadRejectedReports() {
   container.innerHTML = '<div class="text-center"><div class="spinner-border"></div><div class="mt-2">Loading...</div></div>';
 
   try {
-    const response = await fetch('http://localhost:5001/admin/rejected-reports');
+    const response = await fetch('${process.env.BACKEND_URL}/admin/rejected-reports');
     const data = await response.json();
 // // ${report.attempted_count} out of ${report.total_ngos_in_range} 
 
@@ -885,7 +885,7 @@ async function loadRejectedReports() {
               </div>
               <div class="col-md-4 text-center">
                 ${report.ir_image_url ? `
-                  <img src="http://localhost:5001/uploads/injury_reports/${report.ir_image_url}" class="img-fluid rounded shadow" style="max-height: 250px;" alt="Report Image">
+                  <img src="${process.env.BACKEND_URL}/uploads/injury_reports/${report.ir_image_url}" class="img-fluid rounded shadow" style="max-height: 250px;" alt="Report Image">
                 ` : '<div class="text-muted">No image available</div>'}
               </div>
             </div>
@@ -957,7 +957,7 @@ function showManualAssignModal(reportId) {
 // Load NGOs for dropdown
 async function loadNGOsForAssignment() {
   try {
-    const response = await fetch('http://localhost:5001/admin/ngo-applications-app');
+    const response = await fetch(`${process.env.BACKEND_URL}/admin/ngo-applications-app`);
     const data = await response.json();
 
     const select = document.getElementById('manualNGOSelect');
@@ -992,7 +992,7 @@ async function submitManualAssignment(reportId) {
   }
 
   try {
-    const response = await fetch('http://localhost:5001/admin/manually-assign-report', {
+    const response = await fetch(`${process.env.BACKEND_URL}/admin/manually-assign-report`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ reportId, ngoId, adminNotes })
@@ -1040,7 +1040,7 @@ function editNGOStatus(ngoId, currentStatus) {
     return;
   }
 
-  fetch('http://localhost:5001/admin/ngo-decision', {
+  fetch(`${process.env.BACKEND_URL}/admin/ngo-decision`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ ngo_id: ngoId, decision: newStatus })

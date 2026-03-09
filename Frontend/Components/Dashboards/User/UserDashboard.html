@@ -719,7 +719,7 @@
       const container = document.getElementById("adoptionPosts");
       container.innerHTML = '<div class="spinner-border text-success" role="status"></div>';
 
-      fetch("http://localhost:5001/adoptions/all")
+      fetch(`${process.env.BACKEND_URL}/adoptions/all`)
         .then(res => res.json())
         .then(data => {
           if(data.success) {
@@ -763,7 +763,7 @@
   const container = document.getElementById("myReportsContainer");
   container.innerHTML = '<div class="spinner-border" role="status"></div>';
 
-  fetch(`http://localhost:5001/user-reports/${userId}`)
+  fetch(`${process.env.BACKEND_URL}/user-reports/${userId}`)
     .then(res => res.json())
     .then(data => {
       if (!data.success) {
@@ -808,7 +808,7 @@ function loadUserNotifications() {
   const container = document.getElementById("notificationsContainer");
   container.innerHTML = '<div class="spinner-border text-primary" role="status"></div>';
 
-  fetch(`http://localhost:5001/user/notifications/${userId}`)
+  fetch(`${process.env.BACKEND_URL}/user/notifications/${userId}`)
     .then(res => res.json())
     .then(data => {
       if (!data.success) {
@@ -842,7 +842,7 @@ function loadUserNotifications() {
   // const user = JSON.parse(localStorage.getItem("user"));
   if (!loggedUser) return;
 
-  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`)
+  fetch(`${process.env.BACKEND_URL}/user/profile/${loggedUser.um_id}`)
     .then(res => res.json())
     .then(data => {
       if (data.success) {
@@ -891,7 +891,7 @@ document.getElementById("profileForm").addEventListener("submit", function(e) {
 
   const updatedProfile = { um_name, um_email, um_contact, um_address };
 
-  fetch(`http://localhost:5001/user/profile/${loggedUser.um_id}`, {
+  fetch(`${process.env.BACKEND_URL}/user/profile/${loggedUser.um_id}`, {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(updatedProfile)

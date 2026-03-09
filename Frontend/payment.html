@@ -633,7 +633,7 @@ async function handlePay() {
 
   try{
 
-    const response = await fetch("http://localhost:5001/api/donation/pay",{
+    const response = await fetch(`${process.env.BACKEND_URL}/api/donation/pay`,{
       method:"POST",
       headers:{
         "Content-Type":"application/json"

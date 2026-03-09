@@ -717,7 +717,7 @@
         formData.append("document", fileInput.files[0]);
 
         try {
-          const res = await fetch("http://localhost:5001/ngo/apply", {
+          const res = await fetch(`${process.env.BACKEND_URL}/ngo/apply`, {
             method: "POST",
             body: formData
           });

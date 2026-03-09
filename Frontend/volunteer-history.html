@@ -463,7 +463,7 @@
         const currentUser = getCurrentUser();
         const userId = currentUser?.um_id;
 
-        const response = await fetch(`http://localhost:5001/volunteer/history/${userId}`);
+        const response = await fetch(`${process.env.BACKEND_URL}/volunteer/history/${userId}`);
         const data = await response.json();
 
         if (data.success) {

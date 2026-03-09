@@ -379,7 +379,7 @@
             const container = document.getElementById('adoptionContainer');
             
             try {
-                const response = await fetch('http://localhost:5001/adoption/posts');
+                const response = await fetch(`${process.env.BACKEND_URL}/adoption/posts`);
                 const data = await response.json();
                 
                 if (data.success && data.posts.length > 0) {
@@ -442,7 +442,7 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="adoption-card">
                         ${post.image_url ? 
-                            `<img src="http://localhost:5001/uploads/adoptions/${post.image_url}" alt="${post.animal_name}" class="adoption-image">` :
+                            `<img src="${process.env.BACKEND_URL}/uploads/adoptions/${post.image_url}" alt="${post.animal_name}" class="adoption-image">` :
                             `<div class="placeholder-image">
                                 ${getAnimalIcon(post.atm_name)}
                             </div>`

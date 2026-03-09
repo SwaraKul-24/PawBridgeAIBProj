@@ -398,7 +398,7 @@
 
             try {
                 // TODO: Replace with actual API endpoint
-                const response = await fetch('http://localhost:5001/ngo/opportunities/create', {
+                const response = await fetch(`${process.env.BACKEND_URL}/ngo/opportunities/create`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
