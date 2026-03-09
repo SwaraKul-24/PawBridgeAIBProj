@@ -46,7 +46,7 @@ export const sendCredentialsMail = async (to, username, password) => {
           
           <p style="font-size: 16px; color: #333;">We recommend changing your password after logging in for the first time.</p>
 
-          <a href="http://127.0.0.1:5500" style="display: inline-block; padding: 12px 25px; margin-top: 20px; background-color: #38512F; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">Login Now</a>
+          <a href="${process.env.FRONTEND_URL}" style="display: inline-block; padding: 12px 25px; margin-top: 20px; background-color: #38512F; color: #fff; text-decoration: none; border-radius: 5px; font-weight: bold;">Login Now</a>
           
           <p style="margin-top: 30px; font-size: 14px; color: #999;">If you did not register for PawBridge, please ignore this email.</p>
         </div>
