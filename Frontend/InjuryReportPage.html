@@ -111,7 +111,7 @@
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item"><a class="nav-link" href="#report">Report Injury</a></li>
-          <li class="nav-item"><a class="nav-link" href="../Frontend/Components/Dashboards/User/UserDashboard.html">Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="/Components/Dashboards/User/UserDashboard.html">Dashboard</a></li>
         </ul>
       </div>
     </div>
@@ -190,7 +190,7 @@
             <div class="d-flex gap-3">
               <button type="submit" class="btn btn-report">🚨 Submit Report</button>
               <button type="reset" class="btn btn-outline-secondary">Clear Form</button>
-              <a href="../Frontend/Components/Dashboards/User/UserDashboard.html" class="btn btn-outline-primary">Back to Dashboard</a>
+              <a href="/Components/Dashboards/User/UserDashboard.html" class="btn btn-outline-primary">Back to Dashboard</a>
             </div>
           </form>
         </div>
@@ -213,7 +213,7 @@
 
   if (!user.um_id) {
     alert("Please login first");
-    window.location.href = "./index.html#login";
+    window.location.href = "/index.html#login";
   }
 
   //animal cursor icons
@@ -369,7 +369,7 @@
         form.reset();
         if (marker) marker.remove();
         mapContainer.style.cursor = "grab";
-        window.location.href = "../Frontend/Components/Dashboards/User/UserDashboard.html";
+        window.location.href = "/Components/Dashboards/User/UserDashboard.html";
       } else {
         alert(`❌ ${data.message}`);
       }

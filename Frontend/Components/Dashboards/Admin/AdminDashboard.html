@@ -488,7 +488,7 @@
 <script type="module">
   // Get user info from localStorage
   // const user = JSON.parse(localStorage.getItem('user') || '{}');
-  import { getUser, logout } from '../../../Assets/js/auth.js'; 
+  import { getUser, logout } from '/Assets/js/auth.js'; 
   window.logout = () => logout('user');
 
   const user = getUser('admin');
@@ -496,7 +496,7 @@
   
   if (!user.um_id || user.rm_name !== 'admin') {
     alert('Access denied. Admin login required.');
-    window.location.href = '../../../index.html#login';
+    window.location.href = '/index.html#login';
   }
 
   let currentApplicationId = null;
@@ -796,7 +796,7 @@
   // function logout() {
   //   if (confirm('Are you sure you want to logout?')) {
   //     localStorage.removeItem('user');
-  //     window.location.href = '../../../index.html#login';
+  //     window.location.href = '/index.html#login';
   //   }
   // }
 

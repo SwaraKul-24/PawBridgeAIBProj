@@ -453,7 +453,7 @@
           </div>
           <div style="font-size: 5rem; opacity: 0.15;">➕</div>
         </div>
-        <button class="btn btn-success" onclick="window.location.href='../../../ngo-create-opportunity.html'">
+        <button class="btn btn-success" onclick="window.location.href='/ngo-create-opportunity.html'">
           ➕ Create New Opportunity
         </button>
       </div>
@@ -474,7 +474,7 @@
           </div>
           <div style="font-size: 5rem; opacity: 0.15;">📚</div>
         </div>
-        <button class="btn btn-success" onclick="window.location.href='../../../ngo-opportunity-history.html'">
+        <button class="btn btn-success" onclick="window.location.href='/ngo-opportunity-history.html'">
           📚 View All Opportunities
         </button>
       </div>
@@ -548,7 +548,7 @@
   </div>
 
 <script type="module">
-import { getUser, logout } from '../../../Assets/js/auth.js';
+import { getUser, logout } from '/Assets/js/auth.js';
 
 // expose logout for inline HTML
 window.logout = () => logout('user');
@@ -641,7 +641,7 @@ function loadCaseReports() {
                   <p><small class="text-muted">Reported: ${new Date(rep.reported_at).toLocaleString()}</small></p>
                 </div>
                 <div class="col-md-4">
-                  ${rep.image_url ? `<img src="${rep.image_url}" class="img-fluid rounded shadow" style="max-height: 200px;">` : '<div class="text-muted">No image</div>'}
+                  ${rep.image_url ? `<img="${rep.image_url}" class="img-fluid rounded shadow" style="max-height: 200px;">` : '<div class="text-muted">No image</div>'}
                 </div>
               </div>
               <div class="alert alert-warning mt-3 mb-3">
@@ -673,7 +673,7 @@ function loadCaseReports() {
                   <p><small class="text-muted">Reported: ${new Date(rep.reported_at).toLocaleString()}</small></p>
                 </div>
                 <div class="col-md-4">
-                  ${rep.image_url ? `<img src="${rep.image_url}" class="img-fluid rounded shadow" style="max-height: 200px;">` : ''}
+                  ${rep.image_url ? `<img="${rep.image_url}" class="img-fluid rounded shadow" style="max-height: 200px;">` : ''}
                 </div>
               </div>
               <div class="status-buttons mt-3">
@@ -987,7 +987,7 @@ function loadAdoptionPosts() {
               <h5>${post.animal_name} (${post.atm_name})</h5>
               <p>Breed: ${post.breed}, Age: ${post.age_months} months, Gender: ${post.gender}</p>
               <p>${post.description}</p>
-              ${post.image_url ? `<img src="${post.image_url}" class="image-preview">` : ''}
+              ${post.image_url ? `<img="${post.image_url}" class="image-preview">` : ''}
               <button class="btn btn-danger btn-sm mt-2" onclick="removeAdoptionPost(${post.ap_id})">Mark as Adopted</button>
             </div>
           `;

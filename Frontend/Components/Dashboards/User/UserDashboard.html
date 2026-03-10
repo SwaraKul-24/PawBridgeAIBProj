@@ -353,7 +353,7 @@
             <div class="card-body">
               <h5 class="card-title text-primary">🚨 Quick Report</h5>
               <p class="card-text">Report an injured animal immediately</p>
-              <button class="btn btn-primary" onclick="window.location.href='../../../InjuryReportPage.html'">Report Now</button>
+              <button class="btn btn-primary" onclick="window.location.href='/InjuryReportPage.html'">Report Now</button>
             </div>
           </div>
         </div>
@@ -383,19 +383,19 @@
     <div id="adPlaceholder" class="d-flex justify-content-center flex-wrap gap-3">
       <!-- placeholder ads -->
        <div class="ad-box border rounded p-3">
-        <img src="../../../Assets/images/Dark Blue Fun Pet Care Business Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <img src="/Assets/images/Dark Blue Fun Pet Care Business Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
         <p class="small text-muted">Pet Sitter</p>
       </div>
       <div class="ad-box border rounded p-3">
-        <img src="../../../Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <img src="/Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post.png" class="img-fluid mb-2" alt="Pet Food Ad">
         <p class="small text-muted">Premium Grooming services</p>
       </div>
       <div class="ad-box border rounded p-3">
-        <img src="../../../Assets/images/Brown Beige Modern Pet Shop Facebook Post.png" class="img-fluid mb-2" alt="Pet Toy Ad">
+        <img src="/Assets/images/Brown Beige Modern Pet Shop Facebook Post.png" class="img-fluid mb-2" alt="Pet Toy Ad">
         <p class="small text-muted">Pet shop</p>
       </div>
       <div class="ad-box border rounded p-3">
-        <img src="../../../Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post (1).png" class="img-fluid mb-2" alt="Pet Food Ad">
+        <img src="/Assets/images/Brown and White Illustrative Pet Grooming Promotion Instagram Post (1).png" class="img-fluid mb-2" alt="Pet Food Ad">
         <p class="small text-muted">Premium Pet Food</p>
       </div>
       
@@ -445,7 +445,7 @@
 <!-- <div class="qr-container">
   <h5 class="mb-3">Scan to Donate via UPI</h5>
   <div class="qr-placeholder" aria-label="UPI QR Code placeholder">
-    <img src="../../../Assets/images/Sustainable (1).png" 
+    <img src="/Assets/images/Sustainable (1).png" 
          alt="UPI QR Code" 
          class="qr-img">
     <div style="font-size: 0.8em; margin-top: 10px; color: #666;">
@@ -580,7 +580,7 @@
           </div>
           <div style="font-size: 5rem; opacity: 0.15;">🌟</div>
         </div>
-        <button class="btn btn-primary" onclick="window.location.href='../../../volunteering-opportunities.html'">
+        <button class="btn btn-primary" onclick="window.location.href='/volunteering-opportunities.html'">
           Browse All Opportunities →
         </button>
       </div>
@@ -602,7 +602,7 @@
           </div>
           <div style="font-size: 5rem; opacity: 0.15;">📚</div>
         </div>
-        <button class="btn btn-primary" onclick="window.location.href='../../../volunteer-history.html'">
+        <button class="btn btn-primary" onclick="window.location.href='/volunteer-history.html'">
           View My History →
         </button>
       </div>
@@ -671,10 +671,10 @@
 
   <!-- JS -->
   <script type="module">
-    import { getUser, logout } from '../../../Assets/js/auth.js'; 
+    import { getUser, logout } from '/Assets/js/auth.js'; 
    function goToDonation() {
      const user = JSON.parse(sessionStorage.getItem("user"));
-     window.location.href = `../../../payment.html?user=${user.um_id}`;
+     window.location.href = `/payment.html?user=${user.um_id}`;
    }
    window.goToDonation = goToDonation;
     
@@ -685,7 +685,7 @@
     console.log(loggedUser);
     if (!loggedUser) {
         alert('Please login first.');
-        window.location.href = '../../../index.html#login';
+        window.location.href = '/index.html#login';
     }
 
     if (loggedUser) {
@@ -707,7 +707,7 @@
 
     // function logout() {
     //   localStorage.removeItem('userToken');
-    //   window.location.href = '../../../landing.html#login';
+    //   window.location.href = '/landing.html#login';
     // }
 
     function refreshDonations() {
@@ -962,7 +962,7 @@ window.loadVolunteeringStats = loadVolunteeringStats;
 <!-- sticky vet ad -->
 <div id="vetAdSidebar" class="vet-ad-sidebar">
   <a href="https://maps.google.com?q=Happy+Paws+Vet+Clinic" target="_blank">
-    <img src="../../../Assets/images/vet ad.png" alt="Vet Ad">
+    <img src="/Assets/images/vet ad.png" alt="Vet Ad">
   </a>
   <div class="vet-ad-text">
     <h5>Happy Paws Vet</h5>
